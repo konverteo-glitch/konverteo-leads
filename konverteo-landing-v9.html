@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konverteo — Transformar atendimento em crescimento</title>
+<link href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde-escuro: #0D2B1E;
+    --verde-medio: #1A4A2E;
+    --verde-lima: #AAFF00;
+    --verde-lima-soft: #BEF742;
+    --creme: #F0EBE0;
+    --creme-soft: #F5F1E8;
+    --branco: #ffffff;
+    --texto-escuro: #0D2B1E;
+    --texto-medio: #2D5A3D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Google Sans', sans-serif;
+    background: var(--verde-escuro);
+    color: var(--creme);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(13, 43, 30, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(170, 255, 0, 0.1);
+  }
+
+  .nav-logo { display: flex; align-items: center; }
+  .nav-logo svg { height: 32px; width: auto; display: block; }
+
+  .nav-cta {
+    background: var(--verde-lima);
+    color: var(--verde-escuro);
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--verde-lima-soft); transform: scale(1.03); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+
+  .hero-curve {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .hero-content { max-width: 680px; position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(170, 255, 0, 0.12);
+    border: 1px solid rgba(170, 255, 0, 0.3);
+    color: var(--verde-lima);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--verde-lima);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero h1 {
+    font-family: 'Platypi', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--creme);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 span { color: var(--verde-lima); }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: rgba(240, 235, 224, 0.75);
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+  }
+
+  .hero-not-chatbot {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: rgba(240, 235, 224, 0.6);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-not-chatbot strong { color: var(--creme); }
+
+  .hero-form {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-form input {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 0.9rem 1.25rem;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--creme);
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .hero-form input::placeholder { color: rgba(240,235,224,0.4); }
+  .hero-form input:focus { border-color: rgba(170,255,0,0.4); }
+
+  .btn-primary {
+    background: var(--verde-lima);
+    color: var(--verde-escuro);
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--verde-lima-soft); transform: translateY(-1px); }
+
+  .hero-disclaimer {
+    font-size: 0.8rem;
+    color: rgba(240,235,224,0.4);
+  }
+
+  /* DOR */
+  .section-dor {
+    background: var(--creme);
+    color: var(--verde-escuro);
+    padding: 6rem 3rem;
+  }
+
+  .section-dor h2 {
+    font-family: 'Platypi', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--verde-escuro);
+  }
+
+  .section-dor .sub {
+    text-align: center;
+    color: rgba(13,43,30,0.6);
+    font-size: 1.05rem;
+    margin-bottom: 4rem;
+  }
+
+  .dor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .dor-card {
+    background: var(--branco);
+    border-radius: 16px;
+    padding: 1.75rem;
+    border: 1px solid rgba(13,43,30,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .dor-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(13,43,30,0.1); }
+
+  .dor-icon {
+    width: 48px; height: 48px;
+    background: rgba(13,43,30,0.06);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .dor-card h3 {
+    font-family: 'Platypi', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--verde-escuro);
+    margin-bottom: 0.5rem;
+  }
+
+  .dor-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(13,43,30,0.65);
+  }
+
+  /* SOLUCAO */
+  .section-solucao {
+    background: var(--verde-escuro);
+    padding: 6rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-solucao::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(170,255,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .section-label {
+    display: block;
+    text-align: center;
+    color: var(--verde-lima);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-solucao h2 {
+    font-family: 'Platypi', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    text-align: center;
+    color: var(--creme);
+    margin-bottom: 1rem;
+  }
+
+  .section-solucao .sub {
+    text-align: center;
+    color: rgba(240,235,224,0.6);
+    margin-bottom: 4rem;
+  }
+
+  .solucao-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .solucao-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(170,255,0,0.12);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: all 0.2s;
+  }
+
+  .solucao-card:hover {
+    background: rgba(170,255,0,0.06);
+    border-color: rgba(170,255,0,0.25);
+    transform: translateY(-3px);
+  }
+
+  .solucao-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .solucao-card h3 {
+    font-family: 'Platypi', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--verde-lima);
+    margin-bottom: 0.5rem;
+  }
+
+  .solucao-card p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(240,235,224,0.65);
+  }
+
+  /* DIFERENCIAL */
+  .section-diferencial {
+    background: var(--verde-lima);
+    padding: 5rem 3rem;
+    text-align: center;
+  }
+
+  .section-diferencial h2 {
+    font-family: 'Platypi', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--verde-escuro);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+
+  .section-diferencial p {
+    font-size: 1.1rem;
+    color: rgba(13,43,30,0.75);
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .btn-dark {
+    background: var(--verde-escuro);
+    color: var(--verde-lima);
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .btn-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,43,30,0.3); }
+
+  /* FORM FINAL */
+  .section-form {
+    background: var(--creme);
+    padding: 6rem 3rem;
+  }
+
+  .form-box {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--branco);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(13,43,30,0.08);
+  }
+
+  .form-box h2 {
+    font-family: 'Platypi', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--verde-escuro);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-box p {
+    color: rgba(13,43,30,0.6);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--verde-escuro);
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input {
+    width: 100%;
+    background: var(--creme-soft);
+    border: 1px solid rgba(13,43,30,0.12);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--verde-escuro);
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .form-group input:focus { border-color: rgba(13,43,30,0.4); }
+  .form-group input::placeholder { color: rgba(13,43,30,0.35); }
+
+  .btn-form {
+    width: 100%;
+    background: var(--verde-escuro);
+    color: var(--verde-lima);
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-form:hover { background: var(--verde-medio); }
+
+  .form-disclaimer {
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(13,43,30,0.4);
+    margin-top: 1rem;
+  }
+
+  /* RODAPE */
+  footer {
+    background: var(--verde-escuro);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(170,255,0,0.1);
+  }
+
+  footer svg { height: 22px; }
+
+  footer p {
+    font-size: 0.8rem;
+    color: rgba(240,235,224,0.35);
+  }
+
+  /* ANIMACOES */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(40px,-30px) scale(1.08); }
+    66% { transform: translate(-20px,20px) scale(0.95); }
+  }
+  @keyframes float2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(-50px,30px) scale(1.05); }
+    66% { transform: translate(30px,-40px) scale(0.97); }
+  }
+  @keyframes float3 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(20px,50px) scale(1.1); }
+  }
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(170,255,0,0.55); }
+    70% { box-shadow: 0 0 0 16px rgba(170,255,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(170,255,0,0); }
+  }
+  @keyframes pulse-ring-dark {
+    0% { box-shadow: 0 0 0 0 rgba(170,255,0,0.4); }
+    70% { box-shadow: 0 0 0 14px rgba(170,255,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(170,255,0,0); }
+  }
+  .hero-content > * {
+    animation: fadeUp 0.6s ease forwards;
+    opacity: 0;
+  }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+  .hero-content > *:nth-child(6) { animation-delay: 0.6s; }
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+  }
+  .hero-orb.o1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(170,255,0,0.18) 0%, transparent 70%);
+    top: -120px; right: -80px;
+    animation: float1 14s ease-in-out infinite;
+  }
+  .hero-orb.o2 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(26,74,46,0.9) 0%, transparent 70%);
+    bottom: 40px; left: -100px;
+    animation: float2 17s ease-in-out infinite;
+  }
+  .hero-orb.o3 {
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(170,255,0,0.12) 0%, transparent 70%);
+    top: 45%; left: 38%;
+    animation: float3 11s ease-in-out infinite;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(170,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(170,255,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 10%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 10%, transparent 100%);
+  }
+  .btn-primary { animation: pulse-ring 2.5s ease-out infinite; }
+  @keyframes btnSlide {
+    0%,100% { transform: translateX(0); }
+    50% { transform: translateX(3px); }
+  }
+  .btn-form {
+    animation: pulse-ring-dark 2.5s ease-out infinite, btnSlide 2s ease-in-out infinite;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.05s; }
+  .reveal-d2 { transition-delay: 0.15s; }
+  .reveal-d3 { transition-delay: 0.25s; }
+  .reveal-d4 { transition-delay: 0.35s; }
+  .dor-card { position: relative; overflow: hidden; }
+  .dor-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(170,255,0,0.07) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 16px;
+    pointer-events: none;
+  }
+  .dor-card:hover::after { opacity: 1; }
+  .solucao-card { position: relative; overflow: hidden; }
+  nav.scrolled {
+    background: rgba(13,43,30,0.98);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  }
+
+  /* SUCESSO */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .success-msg .check {
+    width: 56px; height: 56px;
+    background: var(--verde-lima);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+  }
+
+  .success-msg h3 {
+    font-family: 'Platypi', serif;
+    font-size: 1.4rem;
+    color: var(--verde-escuro);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-msg p { color: rgba(13,43,30,0.6); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .section-dor, .section-solucao, .section-diferencial, .section-form { padding: 4rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-form { flex-direction: column; }
+    .hero-form input, .btn-primary { width: 100%; }
+  }
+
+  /* LOGO BG ANIMADA */
+  .hero-logo-bg {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    height: 340px;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-logo-bg .snap-symbol {
+    animation: symbolPulse 3s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  .hero-logo-bg .snap-line-1 {
+    animation: lineSnap 3s ease-in-out infinite;
+    transform-origin: 50% 12%;
+  }
+  .hero-logo-bg .snap-line-2 {
+    animation: lineSnap 3s ease-in-out infinite 0.12s;
+    transform-origin: 65% 14%;
+  }
+  .hero-logo-bg .snap-line-3 {
+    animation: lineSnap 3s ease-in-out infinite 0.24s;
+    transform-origin: 38% 12%;
+  }
+
+  @keyframes symbolPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    10% { transform: scale(0.92); opacity: 0.7; }
+    25% { transform: scale(1.06); opacity: 1; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes lineSnap {
+    0%, 8% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    20% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+    35% { transform: scale(1) rotate(0deg); opacity: 1; }
+    60%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  }
+
+  /* CARDS DOR - borda vermelha + emojis tristes */
+  .dor-card {
+    border: 2px solid rgba(220, 50, 50, 0.0);
+    transition: border-color 0.3s;
+    animation: borderPulseRed 3s ease-in-out infinite;
+  }
+  .dor-1 { animation-delay: 0s; }
+  .dor-2 { animation-delay: 0.75s; }
+  .dor-3 { animation-delay: 1.5s; }
+  .dor-4 { animation-delay: 2.25s; }
+
+  @keyframes borderPulseRed {
+    0%, 100% { border-color: rgba(220,50,50,0.15); box-shadow: 0 0 0 0 rgba(220,50,50,0); }
+    50% { border-color: rgba(220,50,50,0.55); box-shadow: 0 0 16px rgba(220,50,50,0.12); }
+  }
+
+  /* EMOJIS DOR - animacoes negativas */
+  @keyframes emojiShake {
+    0%,85%,100% { transform: rotate(0deg); }
+    88% { transform: rotate(-6deg); }
+    92% { transform: rotate(5deg); }
+    96% { transform: rotate(-3deg); }
+  }
+  @keyframes emojiDrop {
+    0%,80%,100% { transform: translateY(0); opacity: 1; }
+    88% { transform: translateY(3px); opacity: 0.8; }
+    94% { transform: translateY(-1px); opacity: 1; }
+  }
+  @keyframes emojiSpin {
+    0%,70% { transform: rotate(0deg); }
+    85% { transform: rotate(-15deg); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes emojiGlitch {
+    0%,88%,100% { transform: translate(0,0); opacity: 1; }
+    91% { transform: translate(-2px, 1px); opacity: 0.85; }
+    94% { transform: translate(2px, -1px); opacity: 0.9; }
+    97% { transform: translate(0,0); opacity: 1; }
+  }
+
+  .dor-1 .dor-icon { animation: emojiShake 4s ease-in-out infinite; }
+  .dor-2 .dor-icon { animation: emojiSpin 5s ease-in-out infinite; }
+  .dor-3 .dor-icon { animation: emojiDrop 4s ease-in-out infinite; }
+  .dor-4 .dor-icon { animation: emojiGlitch 5s ease-in-out infinite; }
+
+  /* EMOJIS SOLUCAO - animacoes positivas */
+  @keyframes emojiJump {
+    0%,75%,100% { transform: translateY(0); }
+    85% { transform: translateY(-5px); }
+    92% { transform: translateY(-2px); }
+  }
+  @keyframes emojiStar {
+    0%,80%,100% { transform: scale(1) rotate(0deg); }
+    88% { transform: scale(1.12) rotate(8deg); }
+    94% { transform: scale(1.05) rotate(3deg); }
+  }
+  @keyframes emojiPop {
+    0%,80%,100% { transform: scale(1); }
+    87% { transform: scale(1.15); }
+    93% { transform: scale(0.97); }
+    97% { transform: scale(1.04); }
+  }
+  @keyframes emojiFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .sol-1 .solucao-icon { animation: emojiJump 3.5s ease-in-out infinite; }
+  .sol-2 .solucao-icon { animation: emojiStar 4s ease-in-out infinite; }
+  .sol-3 .solucao-icon { animation: emojiPop 3.5s ease-in-out infinite; }
+  .sol-4 .solucao-icon { animation: emojiFloat 4s ease-in-out infinite; }
+
+  /* PULSE em todos os botoes */
+  @keyframes pulse-nav {
+    0% { box-shadow: 0 0 0 0 rgba(170,255,0,0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(170,255,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(170,255,0,0); }
+  }
+  @keyframes pulse-dark-btn {
+    0% { box-shadow: 0 0 0 0 rgba(13,43,30,0.5); }
+    70% { box-shadow: 0 0 0 12px rgba(13,43,30,0); }
+    100% { box-shadow: 0 0 0 0 rgba(13,43,30,0); }
+  }
+
+  .nav-cta { animation: pulse-nav 2.5s ease-out infinite; }
+  .btn-dark { animation: pulse-dark-btn 2.5s ease-out infinite; }
+
+  /* SVGs DECORATIVOS DE BACKGROUND */
+  .bg-deco {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.06;
+    z-index: 0;
+  }
+  .section-dor { position: relative; overflow: hidden; }
+  .section-solucao { position: relative; }
+  .dor-bg-deco-1 {
+    width: 220px; bottom: -40px; right: -30px;
+    animation: decoFloat 8s ease-in-out infinite;
+  }
+  .dor-bg-deco-2 {
+    width: 160px; top: 20px; left: -20px;
+    animation: decoFloat 10s ease-in-out infinite reverse;
+    opacity: 0.05;
+  }
+  .sol-bg-deco-1 {
+    width: 200px; top: 40px; right: -20px;
+    animation: decoFloat 9s ease-in-out infinite;
+    opacity: 0.08;
+  }
+  .sol-bg-deco-2 {
+    width: 180px; bottom: 30px; left: -30px;
+    animation: decoFloat 11s ease-in-out infinite reverse;
+    opacity: 0.07;
+  }
+  @keyframes decoFloat {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+  }
+  .dor-grid { position: relative; z-index: 1; }
+  .solucao-grid { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FtYWRhXzIiIGRhdGEtbmFtZT0iQ2FtYWRhIDIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4NS45IDk3LjE0Ij4KICAKICA8ZyBpZD0iQ2FtYWRhXzEtMiIgZGF0YS1uYW1lPSJDYW1hZGEgMSI+CiAgICA8ZyBpZD0iTG9nb19UeXBvZ3JhcGgiIGRhdGEtbmFtZT0iTG9nbyBUeXBvZ3JhcGgiPgogICAgICA8Zz4KICAgICAgICA8Zz4KICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNGMEVCRTAiIHBvaW50cz0iMTI5LjI4IDUxLjIzIDE0NC41MiAzNy45OCAxNTIuNyAzMy4xNyAxNTIuNyAzMS42OCAxMjkuOTMgMzEuNjggMTI5LjkzIDMzLjE3IDEzMy45NSAzNy41IDExNC45MyA1OC43IDExNC45MyAzOC4wNCAxMjAuODIgMzMuMTcgMTIwLjgyIDMxLjY4IDk4LjY4IDMxLjY4IDk4LjY4IDMzLjE3IDEwNC41NyAzOC4wNCAxMDQuNTcgNzkuNDkgOTguNjggODQuMzYgOTguNjggODUuODUgMTIwLjgyIDg1Ljg1IDEyMC44MiA4NC4zNiAxMTQuOTMgNzkuNDkgMTE0LjkzIDYzLjcgMTIxLjc1IDU3Ljc4IDEzNy4wMiA3OS43NCAxMzIuODMgODQuMzYgMTMyLjgzIDg1Ljg1IDE1NC43NCA4NS44NSAxNTQuNzQgODQuMzYgMTQ4LjQ5IDc4Ljk4IDEyOS4yOCA1MS4yMyIvPgogICAgICAgICAgPHBhdGggZmlsbD0iI0YwRUJFMCIgZD0iTTE4Ni4yNiw0OC45OWMtMy4xMS0xLjY1LTYuNzQtMi40Ny0xMC44Ny0yLjQ3cy03LjgxLjg5LTExLjAzLDIuNjdjLTMuMjIsMS43OC01Ljc1LDQuMjEtNy41OCw3LjMtMS44MywzLjA5LTIuNzUsNi42Ny0yLjc1LDEwLjc2cy44OCw3LjI5LDIuNjMsMTAuMjVjMS43NSwyLjk2LDQuMTcsNS4yNiw3LjI2LDYuOTEsMy4wOSwxLjY1LDYuNywyLjQ3LDEwLjgzLDIuNDdzNy44OC0uODgsMTEuMDctMi42M2MzLjE5LTEuNzUsNS43LTQuMTksNy41NC03LjMsMS44My0zLjExLDIuNzUtNi42OSwyLjc1LTEwLjcycy0uODYtNy4zNy0yLjU5LTEwLjMyYy0xLjczLTIuOTYtNC4xNS01LjI2LTcuMjYtNi45MVpNMTg0LjY5LDc1LjU3Yy0uODYsMi4wOS0yLjA3LDMuNzMtMy42MSw0LjkxLTEuNTQsMS4xOC0zLjM0LDEuNzctNS4zOCwxLjc3LTIuMzYsMC00LjQtLjY5LTYuMTItMi4wOC0xLjczLTEuMzktMy4wNi0zLjM1LTQtNS44OS0uOTQtMi41NC0xLjQxLTUuNTYtMS40MS05LjA3LDAtMi43Ny40My01LjIxLDEuMy03LjMuODYtMi4wOSwyLjA3LTMuNzMsMy42MS00LjkxLDEuNTQtMS4xOCwzLjM0LTEuNzcsNS4zOC0xLjc3LDIuMzYsMCw0LjQuNjksNi4xMiwyLjA4LDEuNzMsMS4zOSwzLjA2LDMuMzQsNCw1Ljg1Ljk0LDIuNTEsMS40MSw1LjU1LDEuNDEsOS4xMSwwLDIuNzgtLjQzLDUuMjEtMS4zLDcuM1oiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik0yNDMuMjIsNjAuNDljMC00LjU1LTEuMDctOC4wMi0zLjIyLTEwLjQtMi4xNS0yLjM4LTUuMzEtMy41Ny05LjUtMy41Ny01LjAyLDAtOS45MiwyLjQzLTE0LjY4LDcuM2gtLjM5bC40Ny02LjY3aC0yLjA0bC0xMy4xMSw0LjcxdjEuNDFsNS42NSw0LjgydjIxLjgxbC01LjQyLDQuNzh2MS4xOGgyMC4xOHYtMS4xOGwtNS4xOC00Ljh2LTIyLjNjMS4zLTEuMjIsMi42Mi0yLjE1LDMuOTYtMi43NywxLjc1LS44MSwzLjctMS4yMiw1Ljg1LTEuMjIsMi44MywwLDQuODQuNzIsNi4wNSwyLjE2LDEuMiwxLjQ0LDEuODEsMy44MSwxLjgxLDcuMTF2MTcuMDlsLTUuMTgsNC43NHYxLjE4aDIwLjF2LTEuMThsLTUuMzQtNC43di0xOS40OFoiLz4KICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNGMEVCRTAiIHBvaW50cz0iMjc0LjE1IDQ4Ljc5IDI3OC41OCA1My45NyAyNzIuMDIgNzUuNDQgMjYxLjQzIDU0LjE0IDI2NS44MyA0OC43OSAyNjUuODMgNDcuNjIgMjQ2LjEzIDQ3LjYyIDI0Ni4xMyA0OC43OSAyNTEuMTMgNTQuMzQgMjY3LjA5IDg2LjQ4IDI3MC4wNyA4Ni40OCAyODYuMSA1NC4zNiAyOTEuMTEgNDguNzkgMjkxLjExIDQ3LjYyIDI3NC4xNSA0Ny42MiAyNzQuMTUgNDguNzkiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik0zMjUuODUsNTUuN2MtMS4zMy0yLjkzLTMuMjEtNS4xOS01LjYxLTYuNzktMi40MS0xLjYtNS4yMy0yLjM5LTguNDgtMi4zOS00LjAzLDAtNy41OS45My0xMC42OCwyLjc5LTMuMDksMS44Ni01LjUyLDQuNC03LjMsNy42Mi0xLjc4LDMuMjItMi42Nyw2Ljk4LTIuNjcsMTEuMjcsMCwzLjYxLjgyLDYuODMsMi40Nyw5LjY2LDEuNjUsMi44MywzLjk0LDUuMDQsNi44Nyw2LjYzLDIuOTMsMS42LDYuMjgsMi4zOSwxMC4wNSwyLjM5LDMuNTYsMCw2Ljc5LS43Niw5LjctMi4yOCwyLjkxLTEuNTIsNS4xNC0zLjY0LDYuNzEtNi4zNmwtMi4wNC0xLjg4Yy0yLjgzLDIuNzgtNi40OSw0LjE2LTEwLjk5LDQuMTYtMy45OCwwLTcuMDktMS4zMS05LjM0LTMuOTMtMi4xOS0yLjU0LTMuMy02LjA1LTMuMzYtMTAuNTJoMjYuNjhjMC0zLjk4LS42Ny03LjQzLTItMTAuMzZaTTMwMS4zMyw2Mi42OGMuMTctMS42My40Ny0zLjE0LjkzLTQuNS43My0yLjE3LDEuNzgtMy44NiwzLjE0LTUuMDYsMS4zNi0xLjIsMi45My0xLjgxLDQuNzEtMS44MSwyLjI1LDAsNC4wNC44Miw1LjM4LDIuNDcsMS4zMywxLjY1LDIsMy45OSwyLDcuMDNsLTE2LjE2LDEuODdaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNMzUyLjU5LDQ4Ljc5Yy0yLjMsMS41Mi00LjE5LDMuNjEtNS42NSw2LjI4aC0uMzlsLjQ3LTcuOTNoLTIuMDRsLTEzLjExLDQuNzF2MS40MWw1LjY1LDQuODJ2MjEuODFsLTUuNDIsNC43OHYxLjE4aDIyLjc3di0xLjE4bC03Ljc3LTUuMDV2LTIwLjQ5YzEuMDgtMS4yOSwyLjQ1LTIuMzUsNC4xNi0zLjE2LjcxLS4zNCwxLjQ3LS42LDIuMjUtLjgzbDUuMjEsNS40MmgxLjY1bDQuODctMTMuMDNjLTEuNjgtLjY4LTMuNTEtMS4wMi01LjUtMS4wMi0yLjQ2LDAtNC44NC43Ni03LjE0LDIuMjhaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNMzg5LjQxLDgwLjJjLTIuNDEsMC00LjE5LS44LTUuMzQtMi40LTEuMTUtMS42LTEuNzMtNC4wMi0xLjczLTcuMjZ2LTE3LjYxbDEzLjgyLDIuMDcuOTQtLjcxdi04LjAxaC0xLjE4bC0xMy41OCwyLjA2di0xMS40MWgtMi4xMmwtMTQuMjEsMTUuODZ2MS40OWg2LjY3djE4Ljc2YzAsMi44My41Niw1LjI2LDEuNjksNy4zLDEuMTIsMi4wNCwyLjY5LDMuNjQsNC43MSw0Ljc5LDIuMDEsMS4xNSw0LjM4LDEuNzMsNy4xMSwxLjczLDMuMTQsMCw1Ljk0LS44Miw4LjQtMi40NywyLjQ2LTEuNjUsNC4yNC0zLjg5LDUuMzQtNi43MWwtMi4yOC0xLjQxYy0yLjI1LDIuNjItNSwzLjkzLTguMjQsMy45M1oiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik00MzYuMjQsNTUuN2MtMS4zMy0yLjkzLTMuMjEtNS4xOS01LjYxLTYuNzktMi40MS0xLjYtNS4yMy0yLjM5LTguNDgtMi4zOS00LjAzLDAtNy41OS45My0xMC42OCwyLjc5LTMuMDksMS44Ni01LjUyLDQuNC03LjMsNy42Mi0xLjc4LDMuMjItMi42Nyw2Ljk4LTIuNjcsMTEuMjcsMCwzLjYxLjgyLDYuODMsMi40Nyw5LjY2LDEuNjUsMi44MywzLjk0LDUuMDQsNi44Nyw2LjYzLDIuOTMsMS42LDYuMjgsMi4zOSwxMC4wNSwyLjM5LDMuNTYsMCw2Ljc5LS43Niw5LjctMi4yOCwyLjkxLTEuNTIsNS4xNC0zLjY0LDYuNzEtNi4zNmwtMi4wNC0xLjg4Yy0yLjgzLDIuNzgtNi40OSw0LjE2LTEwLjk5LDQuMTYtMy45OCwwLTcuMDktMS4zMS05LjM0LTMuOTMtMi4xOS0yLjU0LTMuMy02LjA1LTMuMzYtMTAuNTJoMjYuNjhjMC0zLjk4LS42Ny03LjQzLTItMTAuMzZaTTQxMS43Miw2Mi42OGMuMTctMS42My40Ny0zLjE0LjkzLTQuNS43My0yLjE3LDEuNzgtMy44NiwzLjE0LTUuMDYsMS4zNi0xLjIsMi45My0xLjgxLDQuNzEtMS44MSwyLjI1LDAsNC4wNC44Miw1LjM4LDIuNDcsMS4zMywxLjY1LDIsMy45OSwyLDcuMDNsLTE2LjE2LDEuODdaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNNDgzLjMxLDU1LjljLTEuNzMtMi45Ni00LjE1LTUuMjYtNy4yNi02LjkxLTMuMTEtMS42NS02Ljc0LTIuNDctMTAuODctMi40N3MtNy44MS44OS0xMS4wMywyLjY3Yy0zLjIyLDEuNzgtNS43NSw0LjIxLTcuNTgsNy4zLTEuODMsMy4wOS0yLjc1LDYuNjctMi43NSwxMC43NnMuODgsNy4yOSwyLjYzLDEwLjI1YzEuNzUsMi45Niw0LjE3LDUuMjYsNy4yNiw2LjkxLDMuMDksMS42NSw2LjcsMi40NywxMC44MywyLjQ3czcuODgtLjg4LDExLjA3LTIuNjNjMy4xOS0xLjc1LDUuNy00LjE5LDcuNTQtNy4zLDEuODMtMy4xMSwyLjc1LTYuNjksMi43NS0xMC43MnMtLjg2LTcuMzctMi41OS0xMC4zMlpNNDc0LjQ4LDc1LjU3Yy0uODYsMi4wOS0yLjA3LDMuNzMtMy42MSw0LjkxLTEuNTQsMS4xOC0zLjM0LDEuNzctNS4zOCwxLjc3LTIuMzYsMC00LjQtLjY5LTYuMTItMi4wOC0xLjczLTEuMzktMy4wNi0zLjM1LTQtNS44OS0uOTQtMi41NC0xLjQxLTUuNTYtMS40MS05LjA3LDAtMi43Ny40My01LjIxLDEuMy03LjMuODYtMi4wOSwyLjA3LTMuNzMsMy42MS00LjkxLDEuNTQtMS4xOCwzLjM0LTEuNzcsNS4zOC0xLjc3LDIuMzYsMCw0LjQuNjksNi4xMiwyLjA4LDEuNzMsMS4zOSwzLjA2LDMuMzQsNCw1Ljg1Ljk0LDIuNTEsMS40MSw1LjU1LDEuNDEsOS4xMSwwLDIuNzgtLjQzLDUuMjEtMS4zLDcuM1oiLz4KICAgICAgICA8L2c+CiAgICAgICAgPGcgaWQ9ImxvZ28iPgogICAgICAgICAgPGc+CiAgICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNCRUY3NDIiIHBvaW50cz0iNDcuOTggMTIuMTEgNDIuODkgMTEuNDEgNDQuNTYgMCA1MC4xIDEuMDggNDcuOTggMTIuMTEiLz4KICAgICAgICAgICAgPHBvbHlnb24gZmlsbD0iI0JFRjc0MiIgcG9pbnRzPSI2My40NSAxMy4zMiA1NS41OSAxOC44NSA1Mi40MyAxNSA2MC4xMiA4Ljc2IDYzLjQ1IDEzLjMyIi8+CiAgICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNCRUY3NDIiIHBvaW50cz0iMzcuMzIgMTIuMTUgMzMuNDggMTUuMzYgMjcuMjEgNy42IDMxLjgxIDQuMzUgMzcuMzIgMTIuMTUiLz4KICAgICAgICAgIDwvZz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNCRUY3NDIiIGQ9Ik00Mi4yNiw5Ny4xNGMtMi40MiwwLTQuOTItLjIyLTcuNDktLjY4LTEwLjUyLTEuODgtMzAuNDItOS43Ni0zMC40Mi0yNi4xLDAtOC4xNSw2LjctMTMuNDgsMTcuMDYtMTMuNTcuMDksMCwuMTcsMCwuMjYsMCw2LjU1LDAsMTMuNDMsMi4xMiwxNy4yMiw1Ljg0LDIuNTctMi45OSwzLjEyLTUuNzQsMS42Mi04LjIxLTMuNzYtNi4yMS0xNy44NS05LjA1LTI3LjQxLTUuNTJsLTEuNC41Mi0uOTItMS4xN2MtMS4zMy0xLjctMTIuOTEtMTYuODMtMTAuNDUtMjYuMDcuNzEtMi42NiwyLjUyLTQuNjQsNS4yNC01Ljc0LDkuOTItNC4wMiwzMi42NSwxMy4zNywzOC44OCwxOC4zNywzLjg1LTMuMTUsMTQuNDUtMTAuODgsMjEuNjUtNy4xNCwxLjU0LjgsMi42MiwyLjE3LDMuMTMsMy45NiwxLjg3LDYuNTUtNC4zMiwxOC4zOS02LjQ5LDIyLjI1LDcuNTEsMTEuOTcsOC41OSwyMy42OCwyLjkzLDMyLjI2LTQuNjYsNy4wNi0xMy4yNywxMC45OS0yMy40MiwxMC45OVpNMjEuNjgsNjAuODhjLS4wOCwwLS4xNiwwLS4yMywwLTMuMDUuMDMtMTMuMDEuNzktMTMuMDEsOS40OCwwLDE0LjEzLDE5LjUzLDIwLjczLDI3LjA1LDIyLjA3LDExLjY2LDIuMDksMjEuOTItMS4xOCwyNi43Ny04LjU0LDQuODgtNy40MSwzLjU3LTE3LjkxLTMuNjEtMjguODNsLS43LTEuMDcuNjUtMS4xYzMuMjUtNS40OCw3Ljk1LTE1LjgsNi43MS0yMC4xNC0uMjYtLjkzLS43Mi0xLjI2LTEuMDktMS40Ni01LjAzLTIuNjEtMTUuMjEsNC44Ny0xOC4zOCw3LjY5bC0xLjMxLDEuMTctMS4zNS0xLjEyQzMyLjcsMzAuMzcsMTMuNjMsMTcuNiw3LjExLDIwLjIzYy0xLjU1LjYzLTIuNDQsMS41OC0yLjgyLDMuMDEtMS41Miw1LjY4LDUuMjIsMTYuNDMsOC44NSwyMS4zNSwxMS4zOC0zLjQ3LDI2LjI5LjE0LDMwLjg3LDcuNzIsMS41NSwyLjU2LDMuMDksNy42MS0yLjc2LDEzLjc5LjM1Ljg4LjU0LDEuODIuNTYsMi44MS4wNyw0LjMzLTIuNDgsOC4xMi02LjY1LDkuODktNS43NywyLjQ2LTEyLjk1LjYtMTguMjgtNC43MWwyLjg5LTIuODljNS4wNCw1LjAzLDEwLjU4LDUuMjEsMTMuOCwzLjg1LDIuNjktMS4xNSw0LjIxLTMuMzYsNC4xNy02LjA2LS4wNy00LjI4LTcuNjktOC4xMS0xNi4wNC04LjExWiIvPgogICAgICAgIDwvZz4KICAgICAgPC9nPgogICAgPC9nPgogIDwvZz4KPC9zdmc+" alt="Konverteo" style="height:32px;width:auto;display:block;">
+  </div>
+  <a href="#form" class="nav-cta">Quero testar grátis</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb o1"></div>
+  <div class="hero-orb o2"></div>
+  <div class="hero-orb o3"></div>
+  <div class="hero-grid"></div>
+
+  <!-- LOGO BG ANIMADA -->
+  <svg class="hero-logo-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 97.14">
+    <g class="snap-line-1">
+      <polygon fill="#AAFF00" points="47.98 12.11 42.89 11.41 44.56 0 50.1 1.08 47.98 12.11"/>
+    </g>
+    <g class="snap-line-2">
+      <polygon fill="#AAFF00" points="63.45 13.32 55.59 18.85 52.43 15 60.12 8.76 63.45 13.32"/>
+    </g>
+    <g class="snap-line-3">
+      <polygon fill="#AAFF00" points="37.32 12.15 33.48 15.36 27.21 7.6 31.81 4.35 37.32 12.15"/>
+    </g>
+    <g class="snap-symbol">
+      <path fill="#AAFF00" d="M42.26,97.14c-2.42,0-4.92-.22-7.49-.68-10.52-1.88-30.42-9.76-30.42-26.1,0-8.15,6.7-13.48,17.06-13.57.09,0,.17,0,.26,0,6.55,0,13.43,2.12,17.22,5.84,2.57-2.99,3.12-5.74,1.62-8.21-3.76-6.21-17.85-9.05-27.41-5.52l-1.4.52-.92-1.17c-1.33-1.7-12.91-16.83-10.45-26.07.71-2.66,2.52-4.64,5.24-5.74,9.92-4.02,32.65,13.37,38.88,18.37,3.85-3.15,14.45-10.88,21.65-7.14,1.54.8,2.62,2.17,3.13,3.96,1.87,6.55-4.32,18.39-6.49,22.25,7.51,11.97,8.59,23.68,2.93,32.26-4.66,7.06-13.27,10.99-23.42,10.99ZM21.68,60.88c-.08,0-.16,0-.23,0-3.05.03-13.01.79-13.01,9.48,0,14.13,19.53,20.73,27.05,22.07,11.66,2.09,21.92-1.18,26.77-8.54,4.88-7.41,3.57-17.91-3.61-28.83l-.7-1.07.65-1.1c3.25-5.48,7.95-15.8,6.71-20.14-.26-.93-.72-1.26-1.09-1.46-5.03-2.61-15.21,4.87-18.38,7.69l-1.31,1.17-1.35-1.12C32.7,30.37,13.63,17.6,7.11,20.23c-1.55.63-2.44,1.58-2.82,3.01-1.52,5.68,5.22,16.43,8.85,21.35,11.38-3.47,26.29.14,30.87,7.72,1.55,2.56,3.09,7.61-2.76,13.79.35.88.54,1.82.56,2.81.07,4.33-2.48,8.12-6.65,9.89-5.77,2.46-12.95.6-18.28-4.71l2.89-2.89c5.04,5.03,10.58,5.21,13.8,3.85,2.69-1.15,4.21-3.36,4.17-6.06-.07-4.28-7.69-8.11-16.04-8.11Z"/>
+    </g>
+  </svg>
+
+  
+
+  <div class="hero-content">
+    <div class="hero-badge">IA de atendimento</div>
+
+    <h1>Sua clínica nunca mais vai perder um <span>paciente por demora.</span></h1>
+
+    <p class="hero-sub">Cada mensagem sem resposta é um paciente indo para o concorrente. A Konverteo responde por você — em segundos, com a voz da sua clínica.</p>
+
+    <div class="hero-not-chatbot">
+      ❌ <strong>Não é chatbot.</strong> É uma IA que parece uma secretária de verdade.
+    </div>
+
+    <div class="hero-form">
+      <input type="text" id="hero-nome" placeholder="Seu nome" />
+      <input type="tel" id="hero-whatsapp" placeholder="WhatsApp com DDD" />
+      <button class="btn-primary" onclick="capturaHero()">Quero testar grátis →</button>
+    </div>
+
+    <p class="hero-disclaimer">Sem cartão de crédito. Configuração em menos de 24h.</p>
+  </div>
+</section>
+
+<!-- DOR -->
+<section class="section-dor">
+  <div class="bg-deco dor-bg-deco-1" style="fill:#0D2B1E;"><svg id="a2_Camada_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140.84 111.98">
+  
+  <g id="a2_Camada_1-2">
+    <g>
+      <path fill="#002119" d="M91.06,101.7c12.68.07,25.34.42,38,1.19,3.9.24,12.44.4,11.74,3.97-.18.93-.94,2.14-2.41,2.13-23.33-.11-46.03.26-69.38,1.98-11.44.84-22.34-.97-33.65.01l-11.53,1c.13-.01-22.77-.28-23.61-3.02-.35-1.13-.5-3.17,1.11-3.9,1.92-.87,3.77-.45,6.19-1.31-.58-10.41.39-20.46.98-30.96.83-14.73,19.36-7.13,33.97-8.18,2.7,12.33-4.45,23.45-.4,37.39.54,1.85,7.1,1.79,7.13-.03l.51-27.87c.14-7.52.36-14.6,3.45-21.43,7.97-.34,27.96-4.44,32.51,1,2.99,3.58.69,7.73.08,11.56-1.95,12.21-1.78,24.33-1.16,36.55,2.97.6,4.66.16,6.47-.09ZM78.55,75.11c1.14-2.98.9-5.77.5-8.81-4.8-1.57-8.02-4.59-10.48-8.9-3.6.26-6.58.06-10.47,1.66,5.37,7.43,11.2,13.93,20.44,16.06ZM80.58,58.03c-1.83-1.62-5.08-1.15-7.38-.59,1.3,3.53,3.18,5.17,6.29,6.4.82-1.6,2.4-4.66,1.09-5.82ZM78.51,87.73c.69-3.43.75-6.11,0-9.12-8.84-1.16-14.86-6.38-20.92-12.34-.41,3.79-2.44,9.64-.18,12.72,4.72,6.42,13.82,9.11,21.1,8.74ZM79.26,101.54c.69-4.23.32-6.51-.42-9.84-7.75,1.47-14.27-1.43-21.81-5.44-.68,2.44-1.44,7.12.13,8.97,6.51,4.32,14.41,5.35,22.11,6.31ZM66.55,102.58l-9.88-2.83c-.21,1.08-.16,3.09.56,3.13,3.73.2,6.52.68,9.33-.3Z"/>
+      <path fill="#002119" d="M79.15,16.28c-5.25,5.68-11.48,9.81-18.21,13.94-1.92,3.68-1.57,10-5.59,13-14.35,10.72-35.2,11.89-49.75.33,5.17-2.5,9.16.48,13.52,1.03,10.35,1.31,19.9.33,28.8-5.36,2.62-1.68,6.09-6.72,3.92-9.03-7.03-1.35-14-3.58-16.2-10.65-.86-2.76.02-5.87,1.66-7.84,5.01-6.01,20.07.43,24.28,9.94,5.71-3.4,10.27-7.42,12.33-12.65,1.91-.4,4.56-.67,5.31,1.34.83,2.24-.41,4.31-.06,5.94ZM52.8,22.59c-2.94-3.32-6.07-5.2-10.02-5.17,1.42,4.29,6.03,6.1,10.02,5.17Z"/>
+      <path fill="#002119" d="M79.15,16.28c-.35-1.63.89-3.7.06-5.94-.74-2.01-3.4-1.74-5.31-1.34.87-3.03-16.23-2.01-16.05-6.11.22-4.93,17.97-2.2,22.68-1.51s6.93,3.03,6.68,7.86c-.69,13.27,3.63,23.96-4.62,22.53-4.13-.72-2.3-10.04-3.45-15.48Z"/>
+      <path fill="#edead7" d="M78.51,87.73c-7.28.37-16.38-2.32-21.1-8.74-2.26-3.08-.23-8.93.18-12.72,6.06,5.96,12.08,11.19,20.92,12.34.75,3.01.69,5.69,0,9.12Z"/>
+      <path fill="#edead7" d="M79.26,101.54c-7.7-.96-15.59-1.99-22.11-6.31-1.57-1.85-.8-6.53-.13-8.97,7.54,4.01,14.06,6.91,21.81,5.44.75,3.33,1.11,5.62.42,9.84Z"/>
+      <path fill="#edead7" d="M78.55,75.11c-9.25-2.13-15.08-8.62-20.44-16.06,3.88-1.6,6.87-1.39,10.47-1.66,2.46,4.31,5.68,7.33,10.48,8.9.4,3.04.64,5.83-.5,8.81Z"/>
+      <path fill="#edead7" d="M80.58,58.03c1.31,1.16-.27,4.22-1.09,5.82-3.12-1.24-4.99-2.88-6.29-6.4,2.3-.56,5.54-1.04,7.38.59Z"/>
+      <path fill="#edead7" d="M66.55,102.58c-2.81.98-5.6.5-9.33.3-.72-.04-.77-2.05-.56-3.13l9.88,2.83Z"/>
+      <g>
+        <path fill="#bef742" d="M129.06,102.89c-12.65-.77-25.32-1.12-38-1.19l1.51-42.71c.41-11.69,2.22-22.85,2.45-34.35.11-5.61,4.66-8.97,9.73-8.7,14.08.77,29.58-2.54,29.13,7.15-.53,11.35.29,22.32-.57,33.59l-1.14,15.01c-.62,8.09-3.13,21.82-3.11,31.2ZM129.29,57.63c-6.99-3.97-12.97-7.38-20.42-8.16,4.94,6.16,13.5,10.07,20.42,8.16ZM106.97,61.66c-1.34-.72-2.93-.56-3.57.51-.42.7-.25,2.13,1.02,2.95,2.03,1.3,20.85,13.08,17.95,5.19.24.64-14.29-8.05-15.39-8.64Z"/>
+        <path fill="#002119" d="M106.97,61.66c1.1.59,15.63,9.28,15.39,8.64,2.91,7.89-15.92-3.89-17.95-5.19-1.28-.82-1.44-2.25-1.02-2.95.64-1.07,2.23-1.23,3.57-.51Z"/>
+        <path fill="#002119" d="M129.29,57.63c-6.93,1.91-15.48-2-20.42-8.16,7.45.78,13.44,4.19,20.42,8.16Z"/>
+      </g>
+    </g>
+  </g>
+</svg></div>
+  <div class="bg-deco dor-bg-deco-2" style="fill:#0D2B1E;"><svg id="a3_Camada_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 93.18 130.28">
+  
+  <g id="a3_Camada_1-2">
+    <g>
+      <g>
+        <path fill="#002119" d="M26.98,119.97c-2.19-.3-4.3-1.27-6.08-2.8-14.03-12.01-15.17-15.97-19.96-32.62-2.72-9.44.59-21.61,8.83-32.57,9.67-12.84,23.6-20.51,37.28-20.51,1.6,0,3.23.1,4.82.31,14.13,1.82,27.47,11.31,35.68,25.38,5.36,9.18,7.37,28.32,3.98,37.92-3.4,9.63-11.35,17.34-21.82,21.14l-2.61.95-2.08-1.84c-1.38-1.22-4.49-1.4-7.24-1.57l-5-.31-.13-5.21c-.07-2.63-.13-5.14.19-7.92l-1.15-.35c-1.38-.41-2.93-.87-4.93-1.95-1.67,1.94-3.84,3.25-6.47,3.9,1.19,2.39,1.91,4.99,2.57,7.38.11.41.23.82.34,1.23l1.22,4.3-4.24,1.41c-1.75.58-3.39.93-4.84,1.24-2.12.45-3.8.81-5.03,1.68l-1.5,1.05-1.82-.25ZM26,90.92c-.23.81-.13,1.57.28,2.32.65,1.17,1.96,2.1,3.44,2.4.34.07.68.14,1.02.22-1.03-1.93-2.09-3.49-3.65-4.59-.3-.21-.73-.35-1.09-.35ZM64.57,83.97c-.16,0-.32.03-.49.1-2.46.96-3.37,3.88-4.57,8.57-.11.42-.22.85-.33,1.28,3.64-1.84,6.01-5.04,6.38-8.83.03-.35-.09-.72-.18-.88-.19-.11-.49-.24-.8-.24ZM46.91,76.95c-1.11,0-1.34.54-1.48.86-1.84,4.21-1.71,8.6.26,12.14,2.69-4.31,3.48-7.88,2.56-11.44-.19-.75-.62-1.52-1.13-1.56-.07,0-.14,0-.21,0Z"/>
+        <path fill="#bef742" d="M67.45,110.73c-2.68-2.36-6.88-2.46-10.44-2.69-.08-3.29-.21-6.08.32-9.29,6.55-1.81,11.49-6.79,12.15-13.5.2-1.99-.67-4.08-2.08-5.01-1.46-.97-3.43-1.45-5.49-.65-6.2,2.41-6.45,10.17-8.36,15.51-1.6-.49-2.93-.79-4.85-1.86,3.27-4.78,5.42-10.08,3.89-15.95-.73-2.81-2.69-4.73-5.18-4.89s-4.93.9-6.09,3.54c-2.65,6.08-2.16,13.08,2.16,18.27-1.65,2.04-3.93,2.71-6.3,2.83-1.88-3.8-3.41-7.49-6.87-9.94-2.53-1.8-6.63-1.71-7.82,1.46-1.9,5.07,1.87,9.87,6.82,10.91,1.77.37,4.35.93,5.75,1.51,2.06,2.53,2.92,6.32,3.88,9.72-4.04,1.34-7.7,1.28-10.75,3.42-1.17-.16-2.4-.66-3.57-1.66-12.55-10.75-13.41-13.69-17.95-29.44-5.11-17.74,17.79-48.84,44.44-45.41,13.27,1.71,24.7,11.18,31.25,22.4,4.33,7.42,6.43,24.67,3.5,32.97s-10.24,14.77-18.43,17.74Z"/>
+        <path fill="#002119" d="M67.45,110.73c1.1,3.64-.06,11.28-.71,14.54-.33,1.67-2.27-1.21-3.26-.71-1.48-5.48-29.39-3.5-32.27,1.3,18.42-3.69,29.4-4.62,35.42-.41.29,3.22-24.64,5.93-35.57,4.36-3-.43-1.92-4.38-2.07-6.17l-.8-9.53c3.05-2.14,6.7-2.08,10.75-3.42-.96-3.4-1.82-7.19-3.88-9.72-1.4-.58-3.98-1.14-5.75-1.51-4.95-1.04-8.72-5.83-6.82-10.91,1.19-3.17,5.29-3.26,7.82-1.46,3.46,2.45,4.99,6.14,6.87,9.94,2.37-.12,4.65-.79,6.3-2.83-4.32-5.2-4.81-12.19-2.16-18.27,1.15-2.64,3.58-3.7,6.09-3.54s4.45,2.08,5.18,4.89c1.52,5.87-.63,11.18-3.89,15.95,1.92,1.08,3.25,1.37,4.85,1.86,1.91-5.34,2.16-13.1,8.36-15.51,2.07-.8,4.03-.32,5.49.65,1.41.93,2.28,3.02,2.08,5.01-.66,6.71-5.6,11.69-12.15,13.5-.53,3.21-.4,6-.32,9.29,3.56.22,7.76.33,10.44,2.69ZM47.29,76.12c-5.12-.2-4.61,11.83-1.47,14.99,4.49-3.88,5.13-14.85,1.47-14.99ZM33.6,96.88c-1.49-3.59-3.32-7.19-6.7-7.79-1.9-.34-2.13,2.31-1.71,3.33,1.36,3.35,4.11,4.21,8.42,4.46ZM65.89,84.41c-.02-3.76-6.88-.9-7.65,9.9,4.19-.67,7.67-5.12,7.65-9.9ZM52.71,108.57l.42-9.85c-2.5,0-4.94-2.22-6.96-2-2.46.91-4.45,3.1-7.65,3.45.95,3.72,1.92,6.6,3.25,9.97,3.72-1.08,6.82-1.25,10.94-1.56ZM64.58,118.42c.87-3.19-1.66-2.56-2.99-3.02-6.5-2.23-12.74-1.72-19.35,0-4.4,1.15-9.45.03-13.12,4.17,11.43-2.45,24.23-7.01,35.45-1.16Z"/>
+        <path fill="#bef742" d="M64.08,124.06l-1.05.42c-8.47-3.18-20.91-.35-31.83,1.39,2.89-4.81,31.4-7.29,32.88-1.81Z"/>
+        <path fill="#bef742" d="M52.71,108.57c-4.12.32-7.23.48-10.94,1.56-1.33-3.37-2.3-6.25-3.25-9.97,3.2-.35,5.19-2.54,7.65-3.45,2.01-.22,4.46,2,6.96,2l-.42,9.85Z"/>
+        <path fill="#bef742" d="M47.29,76.12c3.67.14,3.03,11.1-1.47,14.99-3.15-3.16-3.65-15.18,1.47-14.99Z"/>
+        <path fill="#bef742" d="M64.58,118.42c-11.22-5.86-24.01-1.29-35.45,1.16,3.66-4.14,8.72-3.02,13.12-4.17,6.61-1.72,12.85-2.24,19.35,0,1.32.45,3.86-.17,2.99,3.02Z"/>
+        <path fill="#bef742" d="M65.89,84.41c.02,4.78-3.46,9.22-7.65,9.9.77-10.8,7.63-13.66,7.65-9.9Z"/>
+        <path fill="#bef742" d="M33.6,96.88c-4.3-.25-7.06-1.11-8.42-4.46-.41-1.02-.19-3.67,1.71-3.33,3.38.6,5.22,4.2,6.7,7.79Z"/>
+      </g>
+      <path fill="#002119" d="M37.99,4.36c-3.41,7.52.94,18.31-4.25,18.3-1.76-3.79-2.78-23.18,2.66-22.04,1.2.25,2.34,2.08,1.59,3.74Z"/>
+      <path fill="#002119" d="M86.31,15.92c-3.67,5.84-6.65,12.25-12.55,15.49.39-7.25,5.72-11,8.68-16.29.77-1.37,4.49-.17,3.87.81Z"/>
+      <path fill="#002119" d="M11.77,13.46c3.79-3.12,6.77,11.8,5.9,14.87-2.53.68-9-12.32-5.9-14.87Z"/>
+      <path fill="#002119" d="M57.06,19.78c-.48,1.18-1.42,1.84-2.05,1.95-4.06.7,3.44-18.14,4.29-20.47C59.74.07,61.62-.03,62.48,0s2.11,1.2,1.47,2.77l-6.9,17Z"/>
+    </g>
+  </g>
+</svg></div>
+  <h2 class="reveal">Sua clínica perde dinheiro todo dia.</h2>
+  <p class="sub reveal reveal-d1">E você provavelmente nem sabe quanto.</p>
+
+  <div class="dor-grid">
+    <div class="dor-card dor-1 reveal reveal-d1">
+      <div class="dor-icon">📱</div>
+      <h3>Mensagem sem resposta</h3>
+      <p>Paciente manda no WhatsApp às 22h. Você vê só de manhã. Ele já marcou com outra clínica.</p>
+    </div>
+    <div class="dor-card dor-2 reveal reveal-d2">
+      <div class="dor-icon">🔄</div>
+      <h3>Secretária sobrecarregada</h3>
+      <p>Ela atende telefone, agenda, recebe paciente e ainda precisa responder mensagem. Algo sempre fica pra trás.</p>
+    </div>
+    <div class="dor-card dor-3 reveal reveal-d3">
+      <div class="dor-icon">🌙</div>
+      <h3>Fora do horário</h3>
+      <p>70% das mensagens chegam fora do horário comercial. Sem atendimento, sem agendamento.</p>
+    </div>
+    <div class="dor-card dor-4 reveal reveal-d4">
+      <div class="dor-icon">🤖</div>
+      <h3>Chatbot que afasta</h3>
+      <p>Tentou automação antes e o paciente reclamou. Menu com número, resposta fria, zero humanidade.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUCAO -->
+<section class="section-solucao">
+  <div class="bg-deco sol-bg-deco-1"><svg id="a10_Camada_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 305.03 398.55">
+  
+  <g id="a10_Camada_1-2">
+    <g>
+      <path fill="#fff" d="M126.12,156.86l58.91,12.16s19.17-16.36,21.51-31.32c2.34-14.96,1.87-43.95-7.48-46.75-9.35-2.81-46.29-15.9-52.36-15.43s-33.19,30.39-27.12,42.55c6.08,12.16,6.55,38.81,6.55,38.81Z"/>
+      <path fill="#fff" d="M232.95,124.13s19.4-3.04,27.35-19.64c7.95-16.6,16.13-48.39,16.13-48.39l2.21-15.73-8.75-20.74,2.1-.94,4.44,4.21,2.57,4.68,1.87-23.84,3.47.86,1.44,15.03,5.14-18.7.23,18.7,8.18-15.9-4.19,21.99,9.57-3.75-13.56,18.94-5.84,39.51-7.25,32.73-14.03,20.1-2.1,2.81s-27.58,4.44-28.29.7c-.7-3.74-.7-12.62-.7-12.62Z"/>
+      <path fill="#fff" d="M30.51,223.95l-11.5-10.85.51,5.24,5.38,7.48-20.1-8.18.47,3.27-4.36.74s7.52,10.26,14.73,10.4c7.21.14-8.03,5.69-8.03,5.69,0,0,1.87,3.74,2.34,3.04s17.77-3.74,17.77-3.74l-3.55,11.26,8.92-6.58,8.65-4.21,5.84-.7s31.09,1.87,31.79,1.64,31.56-10.99,31.56-10.99l22.21-12.62-8.45-15.16-7.01-4.68-8.14,5.81-19.79,13.71c-5.6,3.18-25.24,10.7-31.68,10.99l-27.55-1.56Z"/>
+      <path fill="#002119" d="M195.46,30.54c.03,1.03,0,3.29-1.41,2.69-2.04-.87-1.88-3.92-1.96-5.85s-.15-4.2,1.67-5.26c.96-.55,1.5,1.21,1.52,1.93l.18,6.49Z"/>
+      <path fill="#002119" d="M223.33,44.24c.51,2.51-4.69,2.72-7.19,3.31-1.05.25-1.86-.15-2.04-1.12-.15-.79.43-1.63,1.52-1.99,1.64-.55,7.26-2.37,7.71-.2Z"/>
+      <path fill="#002119" d="M216.51,25.25c1.7,1.91-2.69,4.7-4.55,6.47-.78.74-1.68.8-2.33.05-.52-.61-.44-1.63.31-2.48,1.14-1.3,5.09-5.7,6.57-4.05Z"/>
+      <g>
+        <g>
+          <path fill="#002119" d="M182.63,180.29c6.08.81,15.9,1.85,20.88-1.06,3.35-1.96,1.31-4.65,1.76-6.09.11-.35.71-1.06,1.18-.65,1.47,1.28,1.58,3.38,1.08,5.13-2.38,8.27-22.43,4.73-29.38,3.4.89-1.61,2.82-.95,4.47-.73Z"/>
+          <path fill="#002119" d="M208.03,194.54c-.09,1.97-.92,3.47-2.43,3.69-1.71.25-3.29-.66-3.81-2.4-.44-1.46-.93-2.91,0-4.09.91-1.16,2.58-1.58,4.06-1.09s2.28,1.88,2.18,3.9Z"/>
+          <path fill="#002119" d="M207.08,211.19c-1.82-.71-2.43-3.54-1.82-5.36.51-1.52,3.1-2.09,4.4-1.4,1.52.81,2.4,2.69,1.91,4.39s-2.26,3.24-4.49,2.37Z"/>
+        </g>
+        <path fill="#002119" d="M83.82,368.75c-9.09,2.4-7.09-29.09-3.53-34.55l-4.4-.61c-2.01-.28-3.34-2.18-2.68-4.22.85-2.62,3.25-4.06,6.06-4.01,11.11.22,21.83,2.35,32,6.61.71-1.92.95-3.82,2.41-4.94,3.64-2.78,16.3.61,20.89,1.95,1.09-1.21.76-4.11,2.65-5.35,1.12-.73,2.7-.75,3.97-.34,9.59,3.13,22.7,10.69,31.71,16.69-8-12.82-15.2-26.42-16.2-41.73-7.88-.35-13.61-5.88-14-13.74-.29-5.88.95-11.51,3.14-17.05l9.51-24.07c2.86-7.23,4.63-17.38,2.23-25.38,5.8,2.31,2.41,18.36.86,23.14-2.57,7.97-5.73,15.35-8.77,23.14-2.68,6.87-7.28,19.49-2.65,26.27,2.41-6.6,10.32-9.73,16.74-10.45,16.88-1.89,31.44,2.98,44.85,2.21,4.34-.25,11.12-1.08,13.38-5.24,3.12-5.74,3.07-12.77,3.55-19.14,1.07-14.43-1.34-28.17-4.24-42.23-1.97-9.58-1.76-19.16-1.1-29.04,1.75,4.55,1.52,9.08,1.69,13.64.26,6.89,1.06,13.27,2.56,20.04,3.35,15.06,4.31,30.3,2.69,45.65-.59,5.61-1.64,11.01-4.2,15.88-1.47,2.79-2.14,5.26-1.07,8.43,1.19,3.51,2.95,6.79,5.15,9.87l11.57,16.2c9.82,13.75,18.38,28.55,20.2,45.67.46,4.3.07,8.4-1.78,12.25-3.67,7.65-12.1,11.55-20.32,9.01-4.96,13.82-17.68,16.91-31.2,14.46-6.67-1.19-12.86-3.16-19.2-5.57-17.49-6.66-32.45-14.96-49.97-22.07-2.4,3.66-4,9.38-8.44,8.14-3.15-.88-3.25-9.1-2.2-12.24l-10.73-3.82c-3.92-1.39-2.73-4.94-5.55-2.73-2.26-5.99-.05-18.88,1.28-25.23-2-.71,7.42-2.07,5.44-2.04-.98.01-1.59,2.58-1.17,3.27.82,1.34,2.23,1.52,2.81,2.69.48.99-6.67,2.27-6.43,3.86-4.85,1.05-15.69-2.6-18.38,1.9-5.31,8.91-4.53,23.59-9.16,24.81ZM156.48,295.12c-2.97-.47-5.2-1.97-7.99-3.17.23,2.11,7.64,4.39,7.92,4.43.22.03.35-1.21.07-1.25ZM237.17,381.92c4.92-2.26-.21-19.74-1.33-23.34-2.22-7.13-4.99-13.73-8.31-20.46l-12.68-25.64c.79,4.77,3.25,8.49,4.84,12.83l9.4,21.59c3.9,8.96,9.19,25.18,8.07,35.01Z"/>
+      </g>
+      <g>
+        <path fill="#002119" d="M243.21,121.44c-2.58,1.26-4.89,1.77-7.51,2.34,4.49,8.64,13.94,9.63,22.37,9.56,2.26-.02,3.93-.44,5.66-2.03,5.06-4.65,8.86-10.32,11.67-16.71,3.55-8.07,5.89-16.26,7.23-25.02l4.88-31.92c.66-4.31,1.37-8.31,3.19-12.22.63,3.13-.38,5.74-.79,8.63l-4.17,29.38c-2.51,17.71-7.31,38.52-21.71,50.6,2.07,2.54,2.81,5.3,2.73,8.5-.3,10.99-8.48,20.57-19.39,21.44l-5.64.45c.84.91,1.53,1.88,1.78,3.14,1.13,5.7-2.08,10.63-7.35,12.64-8.01,3.04-16.23,1.41-22.47-4.43-3.13-2.92-5.68-6.05-9.21-9.02.65,3.75-.47,6.69-3.4,8.56-3.11,1.99-6.56,2.5-10.31,2.64-9.99.38-19.65-2.03-28.31-7.3-6.58.83-12.38,3.13-18.1,6.39-9.25,5.28-17.71,11.43-26.05,17.76,7.82,1.01,19.95,20.99,17.76,28.25,12.36.21,27.17-24.4,38.1-18.3-1.63,1.04-3.25.78-4.8,1.21-4.84,1.37-8.68,4.26-12.44,7.49-5.98,5.13-14.49,12.72-22.71,11.78-3.55-.41-6.5-2.24-7.71-5.69l-14.68,8.57c-8.95,5.22-18.6,8.74-28.91,10.45-9.31,1.55-28.19.72-38.43-.98,2.41-1.38,5.08-.96,7.75-.88,19.56.59,27.88,2.41,46.8-5.35,8.08-3.31,15.41-7.51,22.83-12.07,3.33-2.05,6.41-3.94,10.15-5.65-2.98-6.28-7.89-15.17-14.84-17.95l-18.17,14.3c-3.82,3.01-7.53,6.06-12.06,7.86l-9.18,3.66c-16.19,6.45-24.37,5.79-41.48,4.84-3.18-.18-5.95-.76-8.25-3.06l-7.78-7.78c-.82,2.34.98,4.28,2.59,5.59l5.01,4.08c-3.07,3.06-11.51-1.66-14.43-3.16l-7.73-3.98c-.18,6.33,14.25,7.19,15.59,10.34-6.97.37-12.68-3.25-18.64-6.13.6,5.4,13.55,8.97,18.02,9.82,1.76,2.24-9.96,5.05-11.42,6.8,5.3,2.09,15.23-4.83,19.29-1.99,1.24.86-3.72,6.55-3.62,9.7,1.62-.19,2.56-1.54,3.44-2.75,4.61-6.38,8.37-2.42,14.59-9.74.97,1.76,0,3.34-1.31,4.53-4.02,3.69-7.67,1.48-11.24,6.44-1.54,2.15-4.54,5.52-7.14,3.67-3.01-2.14,1.34-8.02,2.61-10.7-3.31.55-5.83,1.8-8.74,2.5-2.52.61-10.18,2.16-10.78-1.35-.48-2.8,7.34-4.38,9.95-6.04-4.56-1.36-8.7-2.46-12.29-5.22-4.36-3.34-4.75-7.98-3.1-8.55.62-.21,1.38-.03,2.21.11.08-1.26-.49-2.92.53-3.84s2.34,0,3.35.47c4.66,2.2,8.72,5.09,13.98,6.66-1.6-2.53-3.62-4.31-3.18-7.22.16-1.07.45-2.16,1.23-2.47,1.02-.4,2.03-.11,2.77.66l5.64,5.86c1.47,1.53,3.46,3.63,5.74,3.98,7.52,1.15,14.97,1.2,22.61.81,8.94-.47,16.88-3.44,24.98-6.77,4.54-1.87,8.61-3.5,12.57-6.61l17.86-14c-3.52.06-6.4.55-9.46-.52s-6.1-3.52-6.14-7.08c-.03-2.62,2.26-3.93,4.08-5.73-4.67.47-8.94.33-12.9-1.81-3.76-2.03-6.69-5.43-7.36-9.72-1.93-12.21,22.45-16.67,25.82-26.97,2.64-8.1-4.29-22.65-7.22-30.74-4.75-13.11-4.46-27.55,1.7-40.07,5.87-11.9,18.06-18.64,31.19-17.02,3.1.38,5.54,2.08,7.73,4.33,5.72-14.08,21.71-18.28,35.37-15.16,6.89,1.57,12.7,5.21,17.28,10.51,6.64,7.69,8.5,15.32,14.4,21.45,3.56,3.69,8.37,5.16,13.48,4.24.71-.13,2.26.22,2.21.85-.95,1.51-2.95,1.33-4.4,2.06,13.52,10.51,13.19,10.4,15.56,26.67.54,3.72,1.02,7.19,2.86,10.69,2.28-.99,5.17-1.42,6.67-3.06.92-1.01,1.42-.59,2.35-1.09,4.75-2.57,9.36-6.09,12.56-10.64,4.8-6.84,8.07-14.22,10.58-22.22,4.26-13.56,7.35-27.13,9.24-41.28.47-3.49-1.13-7.09-2.4-10.08l-4.85-11.5c-.54-1.28-1.32-3.37-.29-4.6,1.25-1.5,3.82-.51,5.16.56,2.13,1.7,3.03,3.94,4.42,6.3.93-6.24.42-11.85.2-17.89-.06-1.5-.25-4.05.98-4.95,1.59-1.15,3.59.75,4.35,2.05,1.42,2.45,1.13,4.85,1.99,7.77,1.91-2.97,1.72-10.56,3.88-12.06,1.42-.98,2.82.56,3.24,1.95.99,3.25-.11,6.27.01,10.04,2.07-1.89,2.98-10.11,5.98-9.68.78.11,1.25.89,1.46,1.85,1.36,5.99-4.01,15.5-5.76,21.26-.5.18-.99.39-1.23.91-.33.17-2.17-.2-1.8-.98,2.31-4.82,7.58-14.91,6.75-20.05l-5.07,11.11c-.92,2.01-1.95,4.14-3.9,5.34-.47.28-1.03-.38-1.05-.68-.09-1.32,4-14.31,2.5-18.22l-5.45,18.39c-.07.22-.54.38-.66.46-1.74,1.19-.8-15.45-3.68-16.84l-.32,16.62c-.04,1.87-.5,3.58-1.51,5.24,1.37,1.4,2.98,1.95,4.39,3.12,4.61,3.81,1.7,9.45.79,8.93s1.22-5.54-3.94-8c-5.8-2.76-4.39-8.82-9.68-10.87.16,2.67,1.5,4.73,2.48,6.98,1.89,4.37,3.74,8.62,4.86,13.2.8,3.29.34,5.99-.26,9.2-3.52,19.07-8.25,43.62-19.48,59.71-2.86,4.1-6.72,6.77-10.84,9.72l-4.84,2.43ZM293.53,12.69c-.25-.46-.49-.27-.54.24.07,1.03.6.9.54-.24ZM186.43,56.44c-3.16-4.76-8.35-5.95-13.05-7.52-6.73-1.45-13.57-1.34-19.89,1.46-2.37,1.05-4.77,2.07-6.27,4.29,13.05-7,26.94-5.54,39.21,1.77ZM137.95,64.01c.37.15.84-1.18.31-1.15,1.26-.05-10.67-5.91-21.81-.42,7.77-1.21,14.51-1.21,21.5,1.58ZM170.97,157.68c16.33-4.3,10.74-27.46,13.89-33.14.47-.84,1.85-1.08,1.58-2.43-.61-.46-1.64-.29-2.11-1.16l5.12-1.02c3.5-.7,5.04-4.51,5.32-7.76.47-5.44-4.44-9.12-6.22-8.45-.32.12-.67.63-.72,1.22l-.76,9.07c-.12,1.45-1.01,2.68-1.85,3.33-1.14.88-2.67,1.28-3.99.54-3.16-1.79-1.59-12.27-3.31-16.17-2.63-.46-5.88-.9-7.98-3.03l-5.48-5.57c-2.74-.32-6.2,1.62-7.53,3.83-.56.94-.85,1.37-1.77,1.1-.71-.21-.84-1.09-.49-1.94,1.31-3.22,4.46-4.44,8.03-5.42-4.6-6.83-11.41-11.8-19.31-8.47-6,2.53-7.57,12.99-8.77,18.68,5.4-3.04,11.59-2.95,14.77,3.05,4.27,8.06,3.56,18.02-1.52,25.62-.87,1.3-1.95,2.6-3.51,2.86.66-3.06,3.03-4.77,3.36-7.81-2.64,1.2-4.94.73-6.36-1.36-2.07-3.03-5.23-10.9-1.81-8.95,1.13.65,2.61,9.24,5.77,8.59.56-.12,1.35-.51,1.71-1.25,2.91-6.08,3.21-11.75-.72-17.39-3.25-4.65-8.73-2.28-12.44.27-.82,4.22-1.94,8.1-3.82,11.91l1.69,3.66c3.11,6.76,5.15,13.77,8.98,20.21,6.04,10.17,17.49,20.7,30.25,17.35Z"/>
+        <path fill="#002119" d="M293.92,26.64c.92-.04,1.09-.45,1.23-.91,3.28-1.21,6.95-6.56,9.26-4.55.47.41.77,1.39.54,2.29-1.41,5.73-6.94,7.54-8.96,11.92-3.61,7.83-9.22,8.15-6.82,5.89,6-5.65,3.38-6.97,9.28-12.41,1.42-1.31,2.97-2.58,3.46-4.65-2.39.71-7.06,6.64-8.74,3.77l.74-1.34Z"/>
+      </g>
+      <g>
+        <path fill="#002119" d="M158.95,119.03c-1.92-1.92-4.43-8.7-4.2-9.32.19-.5.7-.77,1.27-.71,1.86.2,2.33,8.76,5.79,8.63.95-.03,1.94-.68,2.5-1.7,2.49-4.57.22-10.07,2.36-10.14.68-.02,1.36.45,1.33,1.38-.12,3.76-.12,10.74-4.39,12.46-1.68.67-3.44.62-4.66-.6Z"/>
+        <path fill="#002119" d="M163.83,142.86c.7.24,1.81.93,2.44.38,1.01-.9,1.03-2.68.78-4.06-2.3,1.53-7.96,2.74-7.88.5.09-2.44,3.74.75,8.13-3.87.37-.39.8-.62,1.19-.72s1.43.06,1.37.8l-.47,5.72c-.12,1.45-.7,2.92-1.53,3.5-1.77,1.25-6.16.27-5.88-1.47.11-.67.75-1.16,1.86-.78Z"/>
+      </g>
+    </g>
+  </g>
+</svg></div>
+  <div class="bg-deco sol-bg-deco-2"><svg id="a11_Camada_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470.89 292.59">
+  
+  <g id="a11_Camada_1-2">
+    <g>
+      <path fill="#070707" d="M131.44,38.67l4.72,7.48c.57.9.19,2.37-.4,2.97-.55.56-2.84.11-3.14-.77-1.77-5.16-4.32-9.52-7.95-14.2-1.76.75-1.93,3.09-2.93,4.97l-7.42,13.87c-2.44-2.09-1.34-4.21-.36-6.16,2.64-5.26,5.03-10.11,7.39-16.43-8.57-.71-16.47.77-24.69,2.08-1.57-6.41,19.91-5.61,23.99-6.33l-8.14-19.16c-.98-2.3-1.85-4.61-1.1-6.99,4.72,2.38,5.66,6.98,6.92,11.38,1.35,4.66,3.82,8.62,5.85,13.05l8.89-14.32c2.23-3.6,4.25-8.21,8.53-9.67,4.38,2.22-12.35,21.63-13.92,25.89,4.09,1.74,19.57.9,19.38,3.52-.38,5.02-17.46-.85-19.5,1.42l3.89,7.41Z"/>
+      <g>
+        <path fill="#002119" d="M391.46,103.39c-2.25-.22-3.35,2.32-3.53,4.32-.08.94.14,1.89.15,2.83.01.63.09,1.26.46,1.79-.32.61-.57,1.56-.56,2.26-3.48-.49-4.32,2.77-5.43,5.29-1.76,4-3.24,7.92-4.36,12.16-1.33,5.03-23.12,1.85-28.16,3.04,5.97,3.96,11.73,7.56,16.79,12.64l4.95,4.98c19.14,19.25,39.1,61.44,50.1,86.72,1.79,4.11,11.2,17.3,7.72,19.3l-12.59,7.25,17.51,3.27c5.88,1.1,40.83,8.54,35.91,17.67-.55,1.02-1.94,2.54-3.65,2.92-8.47,1.89-16.97,1.42-25.59,1.19l-30.84-.83-34.44.23c-2.51.02-5.04-.56-7.37-.56-2.91,0-3.31-1.93-4.32-3.82l-9.2-17.34-3.4-6.31c-1.03-1.9-1.87-4.07-2.89-6.02l-13.01-24.79c-5.66-10.79-11.62-20.67-15.83-32.34-4.17,23.07-10.19,45.9-23.03,64.42-2.81,4.04-4.93,7.56-8.55,11.18-7.08,7.08-15.45,15.46-26.04,16.82-11.36,1.47-22.62.85-33.9.35l-16.59-.73c-5.16-.23-12.62,1.03-16.33.33-2.69-.5-4.87.05-7.32-.09-4.43-.25-8.6-.59-13.27-.34-5.93.32-11.88-.31-17.72-.28l-11.17.06c-5.6.03-11.29-.41-17.03-.15-5.1.23-9.87.3-14.99.07-5.51-.24-10.89.17-16.27.27l-7.84.15-12.71-.22c-2.57-.04-4.91.52-7.64.49l-32.95-.44c-8.99-.12-17.76-.97-26.58-.69-3.66.11-6.42-.55-7.59-3.99-.41-1.19-3.22-1.73-2.11-3.51,2.93-4.67-.11-5.18,1.55-12.55.4-1.75.06-3.38-.84-4.49v-1.51c.34.23.68.44,1.5.45.05-.97-.12-1.85-.13-2.73,0-.65-.15-1.44-.04-2.07.19-.36,1.06-.66.91-1.25s-.57-.97-1.45-1.56c3.57-.78,1.95-5.56,3.12-7.58.99-1.72.84-3.35,1.3-5.06.37-1.35,2.04-2.52.8-3.72l7.26-12.19c1.14-1.91,3.33-3.27,4.72-5.03,4.63-5.86,10.99-9.28,18.57-10.69-7.1-8.09-5.63-18.18,2.32-24.27,2.22-1.7,4.59-2.93,7.68-2.67-3.18-7-6.05-15.03-3.78-22.69,3.34-11.27,13.43-18.5,24.72-20.12,6.43-.92,12.59-.61,18.99.7l18.39,3.77,6.4,2.2c2.36.81,6.54,2.78,7.95,4.61,2.4,3.11-.74,6.46-3.18,9.03,7.08,4.8,29.14,12.49,25.55,23.75-2.08,6.5-15.96,11.93-23.02,14.06l8.44,4.54c.04,1.12-1.77,1.37-2.74,1.02l-11.28-4.1c-3.86-1.4-8.84,2.14-12.72-1.08,5.36-1.4,11.03-1.59,16.4-3.42,2.28-.78,4.26-1.85,6.62-2.45,3.7-.94,6.47-3.75,10.01-4.98,3.29-1.14,5.16-4.25,3.65-7.54-2.04-4.46-6-6.45-9.68-9.34-4.32-3.39-9.99-6.52-15.57-6.81-1.9-.1-4.05,2.7-5.62.03,1.68-2.32,11.86-7.23,9.99-10.26-2.36-3.84-7.43-3.89-11.05-5.31-5.79-2.26-15.1-4.27-21.8-4.25-5.52,10.38-10.27,20.92-15.03,32.04,2.56,1.96,22.84,10.63,17.72,15.07-2.93,2.54-10.41-4.49-16.96-.09.37,8.38,14.79,16.79,19.91,12.66,1.61-1.3.72-4.23,3-5.48,3.03,3.79,4.74,10.35,2.16,14.67-4.71,7.87-21.38,7.31-28.43.06-3.51,2.51-4.89,5.78-6.78,9.19l-6.72,12.14-3.23,6.67c-3.23,6.67-13.47,24.4-12.39,31.15,1.09,6.76,7.37,10.75,14.18,10.87l46.42.8c11.54.2,22.29.74,34.49.15-1.7-5.3-7.73-13.68-11.11-16.92-12.52-12-22.74-17.99-39.39-23.09-2.54,1.82-6.04,10.49-9.89,8.87,6.82-9.3,13.81-17.49,21.51-25.64,2.54-2.69,6.09-4.37,8.42-7.17,1.47-1.77,2.61-2.07,4.68-2.99,4.18-1.86,8.39-4.05,12.18-6.54,4.81-3.16,21.7-7.04,28.14-8.22,8.58-1.57,6.86-2.45,19.51-3.03l14.77-.69c5.99-.28,10.72.71,17.38,1.85l14.63,2.52-2.71-31.57-.58-6.58-1.61-22.2-1.32-33.51c-.12-2.97,1.13-4.7,2.24-6.96,2.93-5.97,7.36-9.79,12.91-13.49,4.17-2.77,9.15-2.62,14.28-3.59l70.25-13.29,39.35-7.9,13.09-1.86c.98-.14,1.93.37,2.33.74.11.1,3.71,19.2,4.96,21.85,2.88-2.17,3.79-4.85,5.41-7.45l10.67-17.08c1.1-1.76,1.24-3.15,2.86-4.68,2.98-2.8,10.39-18.54,18.24-16.09,4.85,1.51,1.28,12.5,1.24,15.51-.03,2.01-.27,3.29-.85,5l-6.37,18.53c-.95,2.76-.69,5.52-2.6,8.04-2.06,2.7-2.11,6.11-2.99,8.99-.49,1.6-1.24,3.5-.75,4.77ZM383.34,70.13c-2.99,1.89-3.41,6.1-5.44,8.89-3.41,4.69-8.28,9.96-5.22,14.98-5.35-3.55-1.39,1.41-5.73,2.96-1.02.37-2.12-.39-3.06-1.27.89-2.3-.63-4.41-1.32-6.88-1.84-6.59-2.96-13.53-5.75-19.83-1.68-1.49-4.57,1.04-6.16,1.2-3.25.32-6.16.58-9.4,1.47-8.24,2.27-21.55,3.92-29.94,5.52l-14.4,2.75c-4.51.86-8.92,1.58-13.4,2.5l-16.77,3.44c-4.12.84-8.38.9-12.17,2.28-3.86,1.41-7.71,1.61-11.76,2.47-12.27,2.58-18.38,1.22-25.42,10.84-2.07,2.83-5.18,5.41-5.09,9.42l.29,12.01c.01.48.3.98.45,1.19.12.17.38.11.66.08-1,.57-1.1,2.46-.45,3.29l2.31,2.95-1.04.17c-.45.07-.75.5-.43.93.26.34,1.01.41,1.47.41-.04,1.49-1.75.3-2.47,1.25,1.16,5.56-1.56,10.87,2.43,11.88-.82.64-1.4.96-1.49,1.57-.08.53.95.84,1.13,1.48s-1.06,1.2-1.04,1.71c.03.96,1.19,1.28,2.26,2.05-.61.83-2.01-.32-2.28,1.07,1.63.32,4.55-.37,4.69,1.58.12,1.69-2.93,1.74-3.89,1.06-.54,4.15-.18,8.08.05,12.24.15,2.68-.49,5.41.64,7.71l.8,1.63c-1.04,1.72-.37,3.93-.26,5.92.09,1.69-1.26,3.21.79,4.23-.84.64-1.24,1.01-1.32,1.48-.43,2.46,4.99,2.92,4.6,4.04-1.39.39-2.39-.52-3.5-.06-1.28.53-.22,2.35-.35,3.38-1.36,11.35,2.16,14,4.35,20.84l1.47,4.58c1.02,3.19,1.42,6.38,2.45,9.61l3.86,12.14c.48,1.5.74,2.87,1.35,4.45,2.09,5.46,2.73,14.51,6.53,16.35-2.61,2.84.72,8.65,1.54,10.63.91,2.19.17,5.03,1.88,7.04.44.52,1.1.74,1.21,1.16.14.52-1.02,1.95-.7,2.35,2.52,3.15,13.38,1.45,16.06,2.04,2.34.52,3.33-.94,4.56-1.01,3.62-.21,7.93-.82,9.84-4.14,4.7,1.47,3.9-3.41,7.92-2.82-.5-3.11,1.22-4.48,3.69-5.52,3.38-1.43,4.81-5.26,7.32-7.47,2.14-1.88,3.24-3.61,3.14-6.09,1.36-.88,5.56-5.28,4.51-7.22.36-1.47,2.69-2.64,3.65-4.17.8-1.28.09-2.28-.75-2.97.49.67.55-.35,1.17-.33-.09.56.31,1.03,0,0,.37-.89-1.34-1.4-1.33-2.2s1.92-1.34.91-2.15c-.39-.32-.95-.92-1.09-1.67,1.56-.09,3.12.14,5.2-.36-.24-2.98.95-4.85,2.64-6.98,1.34-1.7.08-4.46,1.21-6.25.89-1.41,2.1-3.21.27-3.92.15-.42-.04-.89,0-1.3.22-2.19,2.4-3.56,3.29-5.45,1.4-2.99-.27-7.18.82-10.23.84-2.34,1.44-4.1,1.5-6.87.05-2.22,1.85-4.43,1.48-7.07-.28-1.97.41-4.11,1.64-5.91,1.47,1.61,2.2,2.91,3.71,3.52-.74.75-1.55,1.49-1.25,2.38l2.9,8.56,3.3,6.51c2.39,4.73,7.79,13.55,9.44,16.02.94,1.41,4.01,8.5,5.85,11.74,2.26,3.98,7.64,7.07,8.43,11.61.37,2.15.72,5.56,2.89,7.04-.33,5.44,2.56,2.77,1.9,6.44.88-.18,1.77-.51,2.37-.09,1.41.98.53,2,.42,3.24-.31,3.7,2.97,6.02,4.35,9.03,1.54,3.33,2.94,6.65,7.06,7.51-.56,1-1.13,1.69-1.5,2.19-.94,1.29,1.09,1.32,1.48,2.07,1.62,3.08,4.39,2.32,7.2,2.68,1.37.18,2.01,1.08,3.87.37,1.43-.55,4.17,1.58,5.22-.68.21-.45-.01-1.22.52-1.38.33-.1.99.03,1.06.34.08.34-.49.89-.6,1.49-.15.85.97.9,1.2.61l1.04-1.37c.38.06.77.06,1.15,0-.08.74.25,1.41.81,1.54,1.18.26,1.61-.53,2.04-1.78.37.44.58.99,1.05,1.32.7.49,1.17-.58,1.93-.93.29-.14.86.63,1.12.81.58.4,1.04-.32,1.74-.47.48-.1.97.53,1.31.64.64.2,1.4-.61,1.96-1.02.37-.08.73.81,1.05.96.63.3,1.33-.31,2.01-1.29.39,2.17,2.26,2.41,4.07,2.14l7.8-1.17c3.46-.52,7.66-.08,11.1-.41,5.89,1.43,12.24.49,18.7,1.12,5.83.57,15.74,2.26,19.55-1.4.77-.74-1.37-2.28-2.26-2.7-14.94-7.02-30.82-10.46-47.26-12.03-3.91-.37-7.25-1.9-11.15-1.85-.8.01-.69-1.64-.63-2.19.03-.27,9.35-4.71,11.21-5.56,3.16-1.43,5.94-3.9,9.69-4.52-1.34-6.05-5.36-9.86-7.96-14.77-1.72-3.25-3.15-6.5-4.5-9.89-6.64-16.63-19.47-42.7-29.99-56.63-2.79-3.7-4.45-8.53-8.27-11.38-2.08-1.56-3.17-3.07-4.67-5.21-3.86-5.5-15.07-15.01-20.47-18.48-3.21-2.06-6.6-2.84-8.91-6.34-.29-.43-1.62-.44-1.79-.89-.37-.98-.25-1.79.03-2.6.27-.19,1.26-1.15,1.72-.96,1.62,2.01,3.81.92,5.73,1.09,2.28.2,14.95,1.96,15.83.04.25-.54.18-1.87,1.32-2.5,2.16,2.8,5.52,4.28,8.82,2.88,1.77-.75,4.36-9.37,5.21-10.99.97-1.85,2.2-3.33,1.09-5.5,1.03-.63,2.31-1.16,2.69-1.82.5-.88.14-2.15-.28-3.36,2.05.23,5.92-12.02,5.22-11l1.82-2.64c.33-.48-.72-1.13-1.09-1.84-.4-.81-.08-2.1-.06-2.97s.43-1.74.76-2.56,1.61.04,2.15-.29c1.11-.69,4.98-8.53,4.03-10.46,2.33-5.77,8.57-22.74,7.2-30.81-4.15,2.02-14.49,16.99-16.26,20.33l-1.82,3.42ZM25.79,223.21c-1.04-.35-5.05,4.51-5.05,4.76,0,.74.85,1.01,1.38,1.67-1.8-.12-2.61.45-4,.89-1.53.49-.54,2.53-1.28,3.2-1.06.97-1.92,2.54-2.14,4.21-.16.96-3.01,1.07-2.64,2.74.64.31,1.2.51,1.69.84-2.99-1.32-5.28,13.66-5.27,13.26-.06,6.04-1.57,2.92.13,5.64-.47-.75-2.74,6.26-1.98,8.93.57,2,.3,2.2-.28,4.17-1.18,4.01-.14,8.34-.08,12.71,3.06-.87,5.3-.45,7.76-.7.69-.07,1.35-1.83,1.99-2.04,3.5-1.15,2.17,4.39,14.79,2.8,2.33-.29,5.56,1.74,8.4,0-1.15-2.98-4.63-4.92-5.14-7.56-1.61-8.47,1.22-10.27,2.98-17.56-.75-.34-1.44-.79-1.74-.67-.56.22-.96-1.92-.31-1.99,5.92-.68,5.3-4.88,7.45-9.18l3.03-6.04c1.16-2.32,2.4-4.31,3.39-6.32,1.74-3.54,5.11-5.98,3.33-10.12-.9-2.1.03-4.56-2.99-6.28-2.69-1.53-5.6-3.44-9.27-3.24-5.06.27-9.92,2.6-14.15,5.88Z"/>
+        <rect fill="#070707" x="215.55" y="130.4" width="1.51" height="1.51"/>
+        <path fill="#002119" d="M172.62,138.94c.07-5.6.37-10.95-1.78-16.19,1.49-8.9-.84-17.41-1.73-26.16-.63-6.13-3.73-10.44-9.67-12.2-5.16-1.53-11.75,2.16-15.9,4.65-3.3,1.98-5.29,4.64-8.08,7.23-7.24,6.72-15.65,18.88-20.52,27.56-2.03,3.62-5.31,6.85-6.52,10.85-1.15,3.79-3.56,6.97-8.02,6.94-.4-2.94,1.94-4.54,2.99-6.84,2.64-5.78,6.36-10.51,9.63-15.81,7.23-11.75,16.08-26.07,28.12-33.49,4.99-3.08,10.3-5.99,16.43-5.74,9.66.4,14.73,8.74,15.85,17.42l1.71,13.26,2.17,31.33.91,25.5.56,7.69c.17,2.3.03,15.7.36,17.18.71,3.23-1.21,6.22-3.54,7.31-1.21-2.2-.99-4.22-1.05-6.53l-.53-20.32c-.11-4.1-.87-23.07-.72-25.29.19-2.85-.67-5.66-.63-8.36Z"/>
+        <path fill="#002119" d="M74.08,95.09c-5.7,7.12-9.22,21.89-11.97,30.73-1.24.16-1.71-1.21-1.62-2.23.94-9.61,3.94-18.52,8.58-26.89,1.16-2.09.09-3.69-1.64-5.02-5.6-4.3,4.35-21.79,7.75-26.35,5.41-7.28,10.95-14.01,18.83-18.69,1.76-1.04,4.02-1.43,5.3-2.83.76.59.73,1.39.72,1.88.01-.83-20.85,11.97-29.14,34.96-1.27,3.53-2.28,7.25-.16,10.62,3.96-1.6,4.97-5.53,7.26-8.16,2.49-2.86,11-10.22,15.11-7.09,3.38,2.57.44,6.54-1.53,8.61-5.08,5.34-10.51,8.38-17.48,10.46ZM91.59,79.41c-1.44-4.52-14.29,8.75-14.05,10.69,6.15-1.57,10.16-6.24,14.05-10.69Z"/>
+        <path fill="#002119" d="M419.06,45.87c.38,6.25,2.19,15.57-4.06,20.2-1.01-.99-1-2.76-.7-4.3,1.86-9.82,1.54-19.66-2.46-28.82-.83-1.91-1.84-3.79-.75-5.84,5.68,4.1,7.6,12.72,7.97,18.77Z"/>
+        <path fill="#070707" d="M129.79,162.15c-1.24-6.4,3.33-18.09,4.83-27.21.56-3.44,1.85-6.53,2.65-9.86.28-1.2,1.87-1.42,2.66-1.32.89.12,1.21,1.75.9,2.9l-7.01,26.17c-.86,3.23-.89,6.59-4.03,9.32Z"/>
+        <path fill="#002119" d="M94,172.16c-3.05,1.7-12.47,1.5-11.35-2.47,2.81-.55,6.38.75,9.25-.4,3.01-1.21-3.52-6.8-1.74-9.3,3.96,2.29,7.34,10.22,3.84,12.17Z"/>
+        <path fill="#fbf9f2" d="M91.59,79.41c-3.89,4.44-7.9,9.11-14.05,10.69-.24-1.93,12.61-15.21,14.05-10.69Z"/>
+      </g>
+    </g>
+  </g>
+</svg></div>
+  <span class="section-label reveal">A solução</span>
+  <h2 class="reveal reveal-d1">Konverteo resolve tudo isso.</h2>
+  <p class="sub reveal reveal-d2">Uma IA treinada com a voz da sua clínica. Responde, agenda e converte — 24 horas por dia.</p>
+
+  <div class="solucao-grid">
+    <div class="solucao-card sol-1 reveal reveal-d1">
+      <div class="solucao-icon">⚡</div>
+      <h3>Secretária Virtual</h3>
+      <p>Atende, filtra e direciona contatos automaticamente. 24 horas por dia, sem pausas, sem estresse.</p>
+    </div>
+    <div class="solucao-card sol-2 reveal reveal-d2">
+      <div class="solucao-icon">🎯</div>
+      <h3>SDR Inteligente</h3>
+      <p>Qualifica leads com perguntas estratégicas e prioriza os pacientes mais prontos para marcar.</p>
+    </div>
+    <div class="solucao-card sol-3 reveal reveal-d3">
+      <div class="solucao-icon">📊</div>
+      <h3>CRM Integrado</h3>
+      <p>Registra histórico, organiza pipeline e garante que nenhum follow-up seja esquecido.</p>
+    </div>
+    <div class="solucao-card sol-4 reveal reveal-d4">
+      <div class="solucao-icon">🕐</div>
+      <h3>Atendimento 24h</h3>
+      <p>Responde clientes mesmo fora do horário comercial, em todos os canais. Você dorme. Ela trabalha.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAL -->
+<section class="section-diferencial">
+  <h2 class="reveal">Parece gente.<br>Trabalha como máquina.</h2>
+  <p>A Konverteo não usa respostas prontas engessadas. Ela entende o contexto, adapta o tom e responde como uma secretária treinada por você — não como um robô.</p>
+  <a href="#form" class="btn-dark">Ver como funciona →</a>
+</section>
+
+<!-- FORM FINAL -->
+<section class="section-form" id="form">
+  <div class="form-box">
+    <div id="form-content">
+      <h2>Comece agora.</h2>
+      <p>Deixa seu nome e WhatsApp. Nossa equipe entra em contato em menos de 1 hora.</p>
+
+      <div class="form-group">
+        <label>Seu nome</label>
+        <input type="text" id="form-nome" placeholder="Ex: Dra. Ana Paula" />
+      </div>
+      <div class="form-group">
+        <label>WhatsApp com DDD</label>
+        <input type="tel" id="form-whatsapp" placeholder="(11) 99999-9999" />
+      </div>
+      <div class="form-group">
+        <label>Nome da clínica</label>
+        <input type="text" id="form-clinica" placeholder="Ex: Clínica Saúde e Vida" />
+      </div>
+
+      <button class="btn-form" onclick="capturaForm()">Quero começar grátis →</button>
+
+      <p class="form-disclaimer">Sem cartão de crédito. Sem compromisso. Setup em 24h.</p>
+    </div>
+
+    <div class="success-msg" id="success-msg">
+      <div class="check">✓</div>
+      <h3>Recebemos seu contato!</h3>
+      <p>Nossa equipe vai entrar em contato pelo WhatsApp em até 1 hora.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FtYWRhXzIiIGRhdGEtbmFtZT0iQ2FtYWRhIDIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4NS45IDk3LjE0Ij4KICAKICA8ZyBpZD0iQ2FtYWRhXzEtMiIgZGF0YS1uYW1lPSJDYW1hZGEgMSI+CiAgICA8ZyBpZD0iTG9nb19UeXBvZ3JhcGgiIGRhdGEtbmFtZT0iTG9nbyBUeXBvZ3JhcGgiPgogICAgICA8Zz4KICAgICAgICA8Zz4KICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNGMEVCRTAiIHBvaW50cz0iMTI5LjI4IDUxLjIzIDE0NC41MiAzNy45OCAxNTIuNyAzMy4xNyAxNTIuNyAzMS42OCAxMjkuOTMgMzEuNjggMTI5LjkzIDMzLjE3IDEzMy45NSAzNy41IDExNC45MyA1OC43IDExNC45MyAzOC4wNCAxMjAuODIgMzMuMTcgMTIwLjgyIDMxLjY4IDk4LjY4IDMxLjY4IDk4LjY4IDMzLjE3IDEwNC41NyAzOC4wNCAxMDQuNTcgNzkuNDkgOTguNjggODQuMzYgOTguNjggODUuODUgMTIwLjgyIDg1Ljg1IDEyMC44MiA4NC4zNiAxMTQuOTMgNzkuNDkgMTE0LjkzIDYzLjcgMTIxLjc1IDU3Ljc4IDEzNy4wMiA3OS43NCAxMzIuODMgODQuMzYgMTMyLjgzIDg1Ljg1IDE1NC43NCA4NS44NSAxNTQuNzQgODQuMzYgMTQ4LjQ5IDc4Ljk4IDEyOS4yOCA1MS4yMyIvPgogICAgICAgICAgPHBhdGggZmlsbD0iI0YwRUJFMCIgZD0iTTE4Ni4yNiw0OC45OWMtMy4xMS0xLjY1LTYuNzQtMi40Ny0xMC44Ny0yLjQ3cy03LjgxLjg5LTExLjAzLDIuNjdjLTMuMjIsMS43OC01Ljc1LDQuMjEtNy41OCw3LjMtMS44MywzLjA5LTIuNzUsNi42Ny0yLjc1LDEwLjc2cy44OCw3LjI5LDIuNjMsMTAuMjVjMS43NSwyLjk2LDQuMTcsNS4yNiw3LjI2LDYuOTEsMy4wOSwxLjY1LDYuNywyLjQ3LDEwLjgzLDIuNDdzNy44OC0uODgsMTEuMDctMi42M2MzLjE5LTEuNzUsNS43LTQuMTksNy41NC03LjMsMS44My0zLjExLDIuNzUtNi42OSwyLjc1LTEwLjcycy0uODYtNy4zNy0yLjU5LTEwLjMyYy0xLjczLTIuOTYtNC4xNS01LjI2LTcuMjYtNi45MVpNMTg0LjY5LDc1LjU3Yy0uODYsMi4wOS0yLjA3LDMuNzMtMy42MSw0LjkxLTEuNTQsMS4xOC0zLjM0LDEuNzctNS4zOCwxLjc3LTIuMzYsMC00LjQtLjY5LTYuMTItMi4wOC0xLjczLTEuMzktMy4wNi0zLjM1LTQtNS44OS0uOTQtMi41NC0xLjQxLTUuNTYtMS40MS05LjA3LDAtMi43Ny40My01LjIxLDEuMy03LjMuODYtMi4wOSwyLjA3LTMuNzMsMy42MS00LjkxLDEuNTQtMS4xOCwzLjM0LTEuNzcsNS4zOC0xLjc3LDIuMzYsMCw0LjQuNjksNi4xMiwyLjA4LDEuNzMsMS4zOSwzLjA2LDMuMzQsNCw1Ljg1Ljk0LDIuNTEsMS40MSw1LjU1LDEuNDEsOS4xMSwwLDIuNzgtLjQzLDUuMjEtMS4zLDcuM1oiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik0yNDMuMjIsNjAuNDljMC00LjU1LTEuMDctOC4wMi0zLjIyLTEwLjQtMi4xNS0yLjM4LTUuMzEtMy41Ny05LjUtMy41Ny01LjAyLDAtOS45MiwyLjQzLTE0LjY4LDcuM2gtLjM5bC40Ny02LjY3aC0yLjA0bC0xMy4xMSw0LjcxdjEuNDFsNS42NSw0LjgydjIxLjgxbC01LjQyLDQuNzh2MS4xOGgyMC4xOHYtMS4xOGwtNS4xOC00Ljh2LTIyLjNjMS4zLTEuMjIsMi42Mi0yLjE1LDMuOTYtMi43NywxLjc1LS44MSwzLjctMS4yMiw1Ljg1LTEuMjIsMi44MywwLDQuODQuNzIsNi4wNSwyLjE2LDEuMiwxLjQ0LDEuODEsMy44MSwxLjgxLDcuMTF2MTcuMDlsLTUuMTgsNC43NHYxLjE4aDIwLjF2LTEuMThsLTUuMzQtNC43di0xOS40OFoiLz4KICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNGMEVCRTAiIHBvaW50cz0iMjc0LjE1IDQ4Ljc5IDI3OC41OCA1My45NyAyNzIuMDIgNzUuNDQgMjYxLjQzIDU0LjE0IDI2NS44MyA0OC43OSAyNjUuODMgNDcuNjIgMjQ2LjEzIDQ3LjYyIDI0Ni4xMyA0OC43OSAyNTEuMTMgNTQuMzQgMjY3LjA5IDg2LjQ4IDI3MC4wNyA4Ni40OCAyODYuMSA1NC4zNiAyOTEuMTEgNDguNzkgMjkxLjExIDQ3LjYyIDI3NC4xNSA0Ny42MiAyNzQuMTUgNDguNzkiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik0zMjUuODUsNTUuN2MtMS4zMy0yLjkzLTMuMjEtNS4xOS01LjYxLTYuNzktMi40MS0xLjYtNS4yMy0yLjM5LTguNDgtMi4zOS00LjAzLDAtNy41OS45My0xMC42OCwyLjc5LTMuMDksMS44Ni01LjUyLDQuNC03LjMsNy42Mi0xLjc4LDMuMjItMi42Nyw2Ljk4LTIuNjcsMTEuMjcsMCwzLjYxLjgyLDYuODMsMi40Nyw5LjY2LDEuNjUsMi44MywzLjk0LDUuMDQsNi44Nyw2LjYzLDIuOTMsMS42LDYuMjgsMi4zOSwxMC4wNSwyLjM5LDMuNTYsMCw2Ljc5LS43Niw5LjctMi4yOCwyLjkxLTEuNTIsNS4xNC0zLjY0LDYuNzEtNi4zNmwtMi4wNC0xLjg4Yy0yLjgzLDIuNzgtNi40OSw0LjE2LTEwLjk5LDQuMTYtMy45OCwwLTcuMDktMS4zMS05LjM0LTMuOTMtMi4xOS0yLjU0LTMuMy02LjA1LTMuMzYtMTAuNTJoMjYuNjhjMC0zLjk4LS42Ny03LjQzLTItMTAuMzZaTTMwMS4zMyw2Mi42OGMuMTctMS42My40Ny0zLjE0LjkzLTQuNS43My0yLjE3LDEuNzgtMy44NiwzLjE0LTUuMDYsMS4zNi0xLjIsMi45My0xLjgxLDQuNzEtMS44MSwyLjI1LDAsNC4wNC44Miw1LjM4LDIuNDcsMS4zMywxLjY1LDIsMy45OSwyLDcuMDNsLTE2LjE2LDEuODdaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNMzUyLjU5LDQ4Ljc5Yy0yLjMsMS41Mi00LjE5LDMuNjEtNS42NSw2LjI4aC0uMzlsLjQ3LTcuOTNoLTIuMDRsLTEzLjExLDQuNzF2MS40MWw1LjY1LDQuODJ2MjEuODFsLTUuNDIsNC43OHYxLjE4aDIyLjc3di0xLjE4bC03Ljc3LTUuMDV2LTIwLjQ5YzEuMDgtMS4yOSwyLjQ1LTIuMzUsNC4xNi0zLjE2LjcxLS4zNCwxLjQ3LS42LDIuMjUtLjgzbDUuMjEsNS40MmgxLjY1bDQuODctMTMuMDNjLTEuNjgtLjY4LTMuNTEtMS4wMi01LjUtMS4wMi0yLjQ2LDAtNC44NC43Ni03LjE0LDIuMjhaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNMzg5LjQxLDgwLjJjLTIuNDEsMC00LjE5LS44LTUuMzQtMi40LTEuMTUtMS42LTEuNzMtNC4wMi0xLjczLTcuMjZ2LTE3LjYxbDEzLjgyLDIuMDcuOTQtLjcxdi04LjAxaC0xLjE4bC0xMy41OCwyLjA2di0xMS40MWgtMi4xMmwtMTQuMjEsMTUuODZ2MS40OWg2LjY3djE4Ljc2YzAsMi44My41Niw1LjI2LDEuNjksNy4zLDEuMTIsMi4wNCwyLjY5LDMuNjQsNC43MSw0Ljc5LDIuMDEsMS4xNSw0LjM4LDEuNzMsNy4xMSwxLjczLDMuMTQsMCw1Ljk0LS44Miw4LjQtMi40NywyLjQ2LTEuNjUsNC4yNC0zLjg5LDUuMzQtNi43MWwtMi4yOC0xLjQxYy0yLjI1LDIuNjItNSwzLjkzLTguMjQsMy45M1oiLz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNGMEVCRTAiIGQ9Ik00MzYuMjQsNTUuN2MtMS4zMy0yLjkzLTMuMjEtNS4xOS01LjYxLTYuNzktMi40MS0xLjYtNS4yMy0yLjM5LTguNDgtMi4zOS00LjAzLDAtNy41OS45My0xMC42OCwyLjc5LTMuMDksMS44Ni01LjUyLDQuNC03LjMsNy42Mi0xLjc4LDMuMjItMi42Nyw2Ljk4LTIuNjcsMTEuMjcsMCwzLjYxLjgyLDYuODMsMi40Nyw5LjY2LDEuNjUsMi44MywzLjk0LDUuMDQsNi44Nyw2LjYzLDIuOTMsMS42LDYuMjgsMi4zOSwxMC4wNSwyLjM5LDMuNTYsMCw2Ljc5LS43Niw5LjctMi4yOCwyLjkxLTEuNTIsNS4xNC0zLjY0LDYuNzEtNi4zNmwtMi4wNC0xLjg4Yy0yLjgzLDIuNzgtNi40OSw0LjE2LTEwLjk5LDQuMTYtMy45OCwwLTcuMDktMS4zMS05LjM0LTMuOTMtMi4xOS0yLjU0LTMuMy02LjA1LTMuMzYtMTAuNTJoMjYuNjhjMC0zLjk4LS42Ny03LjQzLTItMTAuMzZaTTQxMS43Miw2Mi42OGMuMTctMS42My40Ny0zLjE0LjkzLTQuNS43My0yLjE3LDEuNzgtMy44NiwzLjE0LTUuMDYsMS4zNi0xLjIsMi45My0xLjgxLDQuNzEtMS44MSwyLjI1LDAsNC4wNC44Miw1LjM4LDIuNDcsMS4zMywxLjY1LDIsMy45OSwyLDcuMDNsLTE2LjE2LDEuODdaIi8+CiAgICAgICAgICA8cGF0aCBmaWxsPSIjRjBFQkUwIiBkPSJNNDgzLjMxLDU1LjljLTEuNzMtMi45Ni00LjE1LTUuMjYtNy4yNi02LjkxLTMuMTEtMS42NS02Ljc0LTIuNDctMTAuODctMi40N3MtNy44MS44OS0xMS4wMywyLjY3Yy0zLjIyLDEuNzgtNS43NSw0LjIxLTcuNTgsNy4zLTEuODMsMy4wOS0yLjc1LDYuNjctMi43NSwxMC43NnMuODgsNy4yOSwyLjYzLDEwLjI1YzEuNzUsMi45Niw0LjE3LDUuMjYsNy4yNiw2LjkxLDMuMDksMS42NSw2LjcsMi40NywxMC44MywyLjQ3czcuODgtLjg4LDExLjA3LTIuNjNjMy4xOS0xLjc1LDUuNy00LjE5LDcuNTQtNy4zLDEuODMtMy4xMSwyLjc1LTYuNjksMi43NS0xMC43MnMtLjg2LTcuMzctMi41OS0xMC4zMlpNNDc0LjQ4LDc1LjU3Yy0uODYsMi4wOS0yLjA3LDMuNzMtMy42MSw0LjkxLTEuNTQsMS4xOC0zLjM0LDEuNzctNS4zOCwxLjc3LTIuMzYsMC00LjQtLjY5LTYuMTItMi4wOC0xLjczLTEuMzktMy4wNi0zLjM1LTQtNS44OS0uOTQtMi41NC0xLjQxLTUuNTYtMS40MS05LjA3LDAtMi43Ny40My01LjIxLDEuMy03LjMuODYtMi4wOSwyLjA3LTMuNzMsMy42MS00LjkxLDEuNTQtMS4xOCwzLjM0LTEuNzcsNS4zOC0xLjc3LDIuMzYsMCw0LjQuNjksNi4xMiwyLjA4LDEuNzMsMS4zOSwzLjA2LDMuMzQsNCw1Ljg1Ljk0LDIuNTEsMS40MSw1LjU1LDEuNDEsOS4xMSwwLDIuNzgtLjQzLDUuMjEtMS4zLDcuM1oiLz4KICAgICAgICA8L2c+CiAgICAgICAgPGcgaWQ9ImxvZ28iPgogICAgICAgICAgPGc+CiAgICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNCRUY3NDIiIHBvaW50cz0iNDcuOTggMTIuMTEgNDIuODkgMTEuNDEgNDQuNTYgMCA1MC4xIDEuMDggNDcuOTggMTIuMTEiLz4KICAgICAgICAgICAgPHBvbHlnb24gZmlsbD0iI0JFRjc0MiIgcG9pbnRzPSI2My40NSAxMy4zMiA1NS41OSAxOC44NSA1Mi40MyAxNSA2MC4xMiA4Ljc2IDYzLjQ1IDEzLjMyIi8+CiAgICAgICAgICAgIDxwb2x5Z29uIGZpbGw9IiNCRUY3NDIiIHBvaW50cz0iMzcuMzIgMTIuMTUgMzMuNDggMTUuMzYgMjcuMjEgNy42IDMxLjgxIDQuMzUgMzcuMzIgMTIuMTUiLz4KICAgICAgICAgIDwvZz4KICAgICAgICAgIDxwYXRoIGZpbGw9IiNCRUY3NDIiIGQ9Ik00Mi4yNiw5Ny4xNGMtMi40MiwwLTQuOTItLjIyLTcuNDktLjY4LTEwLjUyLTEuODgtMzAuNDItOS43Ni0zMC40Mi0yNi4xLDAtOC4xNSw2LjctMTMuNDgsMTcuMDYtMTMuNTcuMDksMCwuMTcsMCwuMjYsMCw2LjU1LDAsMTMuNDMsMi4xMiwxNy4yMiw1Ljg0LDIuNTctMi45OSwzLjEyLTUuNzQsMS42Mi04LjIxLTMuNzYtNi4yMS0xNy44NS05LjA1LTI3LjQxLTUuNTJsLTEuNC41Mi0uOTItMS4xN2MtMS4zMy0xLjctMTIuOTEtMTYuODMtMTAuNDUtMjYuMDcuNzEtMi42NiwyLjUyLTQuNjQsNS4yNC01Ljc0LDkuOTItNC4wMiwzMi42NSwxMy4zNywzOC44OCwxOC4zNywzLjg1LTMuMTUsMTQuNDUtMTAuODgsMjEuNjUtNy4xNCwxLjU0LjgsMi42MiwyLjE3LDMuMTMsMy45NiwxLjg3LDYuNTUtNC4zMiwxOC4zOS02LjQ5LDIyLjI1LDcuNTEsMTEuOTcsOC41OSwyMy42OCwyLjkzLDMyLjI2LTQuNjYsNy4wNi0xMy4yNywxMC45OS0yMy40MiwxMC45OVpNMjEuNjgsNjAuODhjLS4wOCwwLS4xNiwwLS4yMywwLTMuMDUuMDMtMTMuMDEuNzktMTMuMDEsOS40OCwwLDE0LjEzLDE5LjUzLDIwLjczLDI3LjA1LDIyLjA3LDExLjY2LDIuMDksMjEuOTItMS4xOCwyNi43Ny04LjU0LDQuODgtNy40MSwzLjU3LTE3LjkxLTMuNjEtMjguODNsLS43LTEuMDcuNjUtMS4xYzMuMjUtNS40OCw3Ljk1LTE1LjgsNi43MS0yMC4xNC0uMjYtLjkzLS43Mi0xLjI2LTEuMDktMS40Ni01LjAzLTIuNjEtMTUuMjEsNC44Ny0xOC4zOCw3LjY5bC0xLjMxLDEuMTctMS4zNS0xLjEyQzMyLjcsMzAuMzcsMTMuNjMsMTcuNiw3LjExLDIwLjIzYy0xLjU1LjYzLTIuNDQsMS41OC0yLjgyLDMuMDEtMS41Miw1LjY4LDUuMjIsMTYuNDMsOC44NSwyMS4zNSwxMS4zOC0zLjQ3LDI2LjI5LjE0LDMwLjg3LDcuNzIsMS41NSwyLjU2LDMuMDksNy42MS0yLjc2LDEzLjc5LjM1Ljg4LjU0LDEuODIuNTYsMi44MS4wNyw0LjMzLTIuNDgsOC4xMi02LjY1LDkuODktNS43NywyLjQ2LTEyLjk1LjYtMTguMjgtNC43MWwyLjg5LTIuODljNS4wNCw1LjAzLDEwLjU4LDUuMjEsMTMuOCwzLjg1LDIuNjktMS4xNSw0LjIxLTMuMzYsNC4xNy02LjA2LS4wNy00LjI4LTcuNjktOC4xMS0xNi4wNC04LjExWiIvPgogICAgICAgIDwvZz4KICAgICAgPC9nPgogICAgPC9nPgogIDwvZz4KPC9zdmc+" alt="Konverteo" style="height:22px;width:auto;display:block;">
+  <p>© 2026 Konverteo. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+function capturaHero() {
+  const nome = document.getElementById('hero-nome').value.trim();
+  const whats = document.getElementById('hero-whatsapp').value.trim();
+  if (!nome || !whats) { alert('Preenche seu nome e WhatsApp para continuar.'); return; }
+  document.getElementById('form').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('form-nome').value = nome;
+  document.getElementById('form-whatsapp').value = whats;
+}
+
+function capturaForm() {
+  const nome = document.getElementById('form-nome').value.trim();
+  const whats = document.getElementById('form-whatsapp').value.trim();
+  const clinica = document.getElementById('form-clinica').value.trim();
+  if (!nome || !whats) { alert('Preenche pelo menos seu nome e WhatsApp.'); return; }
+  document.getElementById('form-content').style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+  console.log('Lead capturado:', { nome, whats, clinica });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, { passive: true });
+</script>
+</body>
+</html>
