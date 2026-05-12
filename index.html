@@ -1105,8 +1105,9 @@ async function capturaForm() {
     console.log('webhook error:', e);
   }
 
-  document.getElementById('form-content').style.display = 'none';
-  document.getElementById('success-msg').style.display = 'block';
+ document.getElementById('form-content').style.display = 'none';
+document.getElementById('success-msg').style.display = 'block';
+if(typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
